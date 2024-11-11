@@ -23,7 +23,9 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 import numpy as np
 
-# Ingriedents and their taste profiles like sweet, sour, bitter, fruity, spicy. 
+
+# Geschmacksprofile der Zutaten (süß, sauer, bitter, fruchtig, würzig) - Werte zwischen 0 und 1 (geschätzt) 
+
 ingredients = {
     "Rum": [0.8, 0.1, 0.2, 0.1, 0.6],
     "Gin": [0.2, 0.1, 0.7, 0.2, 0.8],
@@ -33,6 +35,13 @@ ingredients = {
     "Zucker": [1.0, 0.0, 0.0, 0.0, 0.0],
     "Minze": [0.2, 0.1, 0.0, 0.0, 0.7],
     "Triple Sec": [0.6, 0.1, 0.3, 0.4, 0.2],
+    "Cola": [0.9, 0.1, 0.1, 0.1, 0.3],
+    "Tonic Water": [0.1, 0.2, 0.1, 0.1, 0.1],
+    "Grenadine": [0.9, 0.1, 0.1, 0.9, 0.1],
+    "Ananassaft": [0.8, 0.1, 0.1, 0.9, 0.1],
+    "Soda": [0.1, 0.1, 0.1, 0.1, 0.1],
+    "Wermut": [0.1, 0.1, 0.9, 0.1, 0.1],
+    "Kaffee": [0.1, 0.1, 0.9, 0.1, 0.1],
 }
 
 ingredient_names = list(ingredients.keys())
@@ -73,7 +82,6 @@ def parse_taste_input(taste_input):
     
     return user_profile
 
-# Funktion zur Generierung eines Cocktails basierend auf dem Benutzerprofil
 def generate_cocktail(user_profile):
     compressed_profile = autoencoder.predict(np.array([user_profile]))[0]
     closest_idx = np.argmin(np.sum(np.square(ingredient_profiles - compressed_profile), axis=1))
