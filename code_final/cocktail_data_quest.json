@@ -5,38 +5,357 @@
     
     
     "ingredients": {
-      "Rum": {
-        "taste": [0.8, 0.1, 0.2, 0.1, 0.6],
-        "alcoholic": true
-      },
-      "Gin": {
-        "taste": [0.2, 0.1, 0.7, 0.2, 0.8],
-        "alcoholic": true
-      },
-      "Wodka": {
-        "taste": [0.1, 0.0, 0.1, 0.1, 0.1],
-        "alcoholic": true
-      },
-      "Zitronensaft": {
-        "taste": [0.1, 0.9, 0.1, 0.1, 0.1],
-        "alcoholic": false
-      },
-      "Orangensaft": {
-        "taste": [0.7, 0.3, 0.1, 0.9, 0.1],
-        "alcoholic": false
-      },
-      "Cola": {
-        "taste": [0.9, 0.1, 0.1, 0.1, 0.3],
-        "alcoholic": false
-      },
-      "Ananassaft": {
-        "taste": [0.8, 0.1, 0.1, 0.9, 0.1],
-        "alcoholic": false
-      },
-      "Kaffee": {
-        "taste": [0.1, 0.1, 0.9, 0.1, 0.1],
-        "alcoholic": false
-      }
+{
+  "Ananassaft": {
+    "taste": [0.7, 0.4, 0.1, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Amaretto": {
+    "taste": [0.8, 0.1, 0.2, 0.6, 0.2],
+    "alcoholic": true
+  },
+  "Anislikör": {
+    "taste": [0.6, 0.0, 0.2, 0.4, 0.9],
+    "alcoholic": true
+  },
+  "Aperol": {
+    "taste": [0.4, 0.1, 0.7, 0.3, 0.1],
+    "alcoholic": true
+  },
+  "Apfelsaft": {
+    "taste": [0.8, 0.2, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Apfelwein": {
+    "taste": [0.4, 0.3, 0.1, 0.8, 0.0],
+    "alcoholic": true
+  },
+  "Bananenlikör": {
+    "taste": [0.9, 0.0, 0.0, 0.7, 0.1],
+    "alcoholic": true
+  },
+  "Bananensaft": {
+    "taste": [0.9, 0.0, 0.0, 0.7, 0.0],
+    "alcoholic": false
+  },
+  "Beerenlikör": {
+    "taste": [0.8, 0.3, 0.0, 0.9, 0.2],
+    "alcoholic": true
+  },
+  "Bier": {
+    "taste": [0.3, 0.1, 0.2, 0.4, 0.9],
+    "alcoholic": true
+  },
+  "Bitter Lemon": {
+    "taste": [0.7, 0.3, 0.8, 0.2, 0.1],
+    "alcoholic": false
+  },
+  "Birnensaft": {
+    "taste": [0.7, 0.1, 0.0, 0.8, 0.1],
+    "alcoholic": false
+  },
+  "Blue Curaçao": {
+    "taste": [0.7, 0.1, 0.0, 0.8, 0.2],
+    "alcoholic": true
+  },
+  "Brauner Zucker": {
+    "taste": [1.0, 0.0, 0.1, 0.3, 0.2],
+    "alcoholic": false
+  },
+  "Campari": {
+    "taste": [0.1, 0.1, 0.9, 0.2, 0.1],
+    "alcoholic": true
+  },
+  "Cassislikör": {
+    "taste": [0.9, 0.1, 0.0, 1.0, 0.1],
+    "alcoholic": true
+  },
+  "Chilisirup": {
+    "taste": [0.7, 0.1, 0.0, 0.3, 1.0],
+    "alcoholic": false
+  },
+  "Cointreau": {
+    "taste": [0.7, 0.1, 0.0, 0.8, 0.2],
+    "alcoholic": true
+  },
+  "Cola": {
+    "taste": [0.9, 0.1, 0.1, 0.1, 0.3],
+    "alcoholic": false
+  },
+  "Cranberrysaft": {
+    "taste": [0.6, 0.9, 0.0, 0.8, 0.1],
+    "alcoholic": false
+  },
+  "Dattelsirup": {
+    "taste": [1.0, 0.1, 0.0, 0.5, 0.2],
+    "alcoholic": false
+  },
+  "Drambuie": {
+    "taste": [0.9, 0.1, 0.1, 0.5, 0.4],
+    "alcoholic": true
+  },
+  "Eiweiß": {
+    "taste": [0.0, 0.0, 0.0, 0.0, 0.2],
+    "alcoholic": false
+  },
+  "Erdbeersirup": {
+    "taste": [1.0, 0.0, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Espresso": {
+    "taste": [0.0, 0.1, 0.8, 0.1, 0.7],
+    "alcoholic": false
+  },
+  "Fanta": {
+    "taste": [0.8, 0.2, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Fernet Branca": {
+    "taste": [0.1, 0.1, 1.0, 0.2, 0.9],
+    "alcoholic": true
+  },
+  "Frangelico": {
+    "taste": [0.8, 0.1, 0.1, 0.6, 0.3],
+    "alcoholic": true
+  },
+  "Gin": {
+    "taste": [0.2, 0.1, 0.7, 0.2, 0.8],
+    "alcoholic": true
+  },
+  "Ginger Ale": {
+    "taste": [0.6, 0.2, 0.0, 0.3, 0.7],
+    "alcoholic": false
+  },
+  "Ginger Beer": {
+    "taste": [0.4, 0.2, 0.1, 0.2, 1.0],
+    "alcoholic": false
+  },
+  "Granatapfelsaft": {
+    "taste": [0.7, 0.4, 0.1, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Grapefruitsaft": {
+    "taste": [0.5, 0.5, 0.3, 0.7, 0.1],
+    "alcoholic": false
+  },
+  "Grenadine": {
+    "taste": [0.9, 0.1, 0.1, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Guavensaft": {
+    "taste": [0.8, 0.2, 0.0, 1.0, 0.1],
+    "alcoholic": false
+  },
+  "Heidelbeerlikör": {
+    "taste": [0.8, 0.1, 0.1, 0.9, 0.2],
+    "alcoholic": true
+  },
+  "Himbeersirup": {
+    "taste": [1.0, 0.1, 0.0, 1.0, 0.1],
+    "alcoholic": false
+  },
+  "Holundersaft": {
+    "taste": [0.7, 0.2, 0.1, 0.8, 0.2],
+    "alcoholic": false
+  },
+  "Holundersirup": {
+    "taste": [0.9, 0.1, 0.0, 0.8, 0.0],
+    "alcoholic": false
+  },
+  "Ingwer": {
+    "taste": [0.0, 0.0, 0.4, 0.2, 1.0],
+    "alcoholic": false
+  },
+  "Ingwersirup": {
+    "taste": [0.8, 0.2, 0.0, 0.3, 0.7],
+    "alcoholic": false
+  },
+  "Jägermeister": {
+    "taste": [0.5, 0.1, 0.5, 0.2, 0.8],
+    "alcoholic": true
+  },
+  "Kaffee": {
+    "taste": [0.1, 0.1, 0.9, 0.1, 0.1],
+    "alcoholic": false
+  },
+  "Kaffeelikör": {
+    "taste": [0.5, 0.1, 0.8, 0.3, 0.1],
+    "alcoholic": true
+  },
+  "Kirschlikör": {
+    "taste": [0.8, 0.1, 0.0, 0.9, 0.2],
+    "alcoholic": true
+  },
+  "Kirschsaft": {
+    "taste": [0.8, 0.5, 0.1, 0.9, 0.0],
+    "alcoholic": false
+  },
+  "Kirschwasser": {
+    "taste": [0.3, 0.1, 0.1, 0.7, 0.4],
+    "alcoholic": true
+  },
+  "Kokosmilch": {
+    "taste": [0.4, 0.1, 0.0, 0.5, 0.2],
+    "alcoholic": false
+  },
+  "Kokoswasser": {
+    "taste": [0.2, 0.1, 0.0, 0.5, 0.0],
+    "alcoholic": false
+  },
+  "Kräuterlikör": {
+    "taste": [0.6, 0.1, 0.6, 0.2, 0.8],
+    "alcoholic": true
+  },
+  "Limettensaft": {
+    "taste": [0.2, 0.9, 0.1, 0.6, 0.1],
+    "alcoholic": false
+  },
+  "Lycheesaft": {
+    "taste": [0.9, 0.2, 0.0, 0.8, 0.1],
+    "alcoholic": false
+  },
+  "Mangosaft": {
+    "taste": [0.8, 0.2, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Maracujasaft": {
+    "taste": [0.8, 0.3, 0.0, 1.0, 0.2],
+    "alcoholic": false
+  },
+  "Martini": {
+    "taste": [0.1, 0.1, 0.9, 0.1, 0.1],
+    "alcoholic": true
+  },
+  "Melonensirup": {
+    "taste": [1.0, 0.0, 0.0, 0.8, 0.1],
+    "alcoholic": false
+  },
+  "Melonenlikör": {
+    "taste": [1.0, 0.0, 0.0, 0.9, 0.2],
+    "alcoholic": true
+  },
+  "Milch": {
+    "taste": [0.4, 0.1, 0.0, 0.0, 0.0],
+    "alcoholic": false
+  },
+  "Multivitaminsaft": {
+    "taste": [0.9, 0.4, 0.1, 0.9, 0.0],
+    "alcoholic": false
+  },
+  "Orangensaft": {
+    "taste": [0.8, 0.3, 0.1, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Passionsfruchtsirup": {
+    "taste": [1.0, 0.2, 0.0, 1.0, 0.2],
+    "alcoholic": false
+  },
+  "Pfirsichlikör": {
+    "taste": [0.9, 0.0, 0.0, 0.9, 0.2],
+    "alcoholic": true
+  },
+  "Pfirsichsaft": {
+    "taste": [0.8, 0.2, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Rhabarbersaft": {
+    "taste": [0.7, 0.4, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Rhabarbersirup": {
+    "taste": [0.9, 0.2, 0.0, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Rote-Bete-Saft": {
+    "taste": [0.3, 0.2, 0.0, 0.5, 0.7],
+    "alcoholic": false
+  },
+  "Rote Saftmischung": {
+    "taste": [0.8, 0.3, 0.1, 0.9, 0.1],
+    "alcoholic": false
+  },
+  "Rum": {
+    "taste": [0.8, 0.1, 0.2, 0.1, 0.6],
+    "alcoholic": true
+  },
+  "Sekt": {
+    "taste": [0.4, 0.2, 0.0, 0.5, 0.3],
+    "alcoholic": true
+  },
+  "Sahne": {
+    "taste": [0.6, 0.1, 0.0, 0.0, 0.2],
+    "alcoholic": false
+  },
+  "Sherry": {
+    "taste": [0.4, 0.1, 0.3, 0.4, 0.5],
+    "alcoholic": true
+  },
+  "Soda": {
+    "taste": [0.0, 0.1, 0.0, 0.1, 0.1],
+    "alcoholic": false
+  },
+  "Sprite": {
+    "taste": [0.9, 0.2, 0.1, 0.4, 0.2],
+    "alcoholic": false
+  },
+  "Tequila": {
+    "taste": [0.2, 0.2, 0.1, 0.1, 0.4],
+    "alcoholic": true
+  },
+  "Tonic Water": {
+    "taste": [0.6, 0.2, 0.2, 0.3, 0.3],
+    "alcoholic": false
+  },
+  "Traubensaft": {
+    "taste": [0.9, 0.2, 0.0, 0.8, 0.1],
+    "alcoholic": false
+  },
+  "Triple Sec": {
+    "taste": [0.6, 0.1, 0.3, 0.4, 0.2],
+    "alcoholic": true
+  },
+  "Vanille-Sirup": {
+    "taste": [1.0, 0.1, 0.0, 0.3, 0.0],
+    "alcoholic": false
+  },
+  "Wein": {
+    "taste": [0.6, 0.3, 0.1, 0.7, 0.2],
+    "alcoholic": true
+  },
+  "Wasser": {
+    "taste": [0.0, 0.0, 0.0, 0.0, 0.0],
+    "alcoholic": false
+  },
+  "Whiskey": {
+    "taste": [0.3, 0.1, 0.2, 0.2, 0.5],
+    "alcoholic": true
+  },
+  "Wodka": {
+    "taste": [0.2, 0.0, 0.2, 0.1, 0.4],
+    "alcoholic": true
+  },
+  "Zitronensaft": {
+    "taste": [0.5, 0.9, 0.1, 0.6, 0.1],
+    "alcoholic": false
+  },
+  "Zucker": {
+    "taste": [1.0, 0.0, 0.0, 0.0, 0.0],
+    "alcoholic": false
+  },
+  "Zuckersirup": {
+    "taste": [1.0, 0.0, 0.0, 0.0, 0.0],
+    "alcoholic": false
+  },
+  "Zwetschgenbrand": {
+    "taste": [0.5, 0.1, 0.0, 0.6, 0.4],
+    "alcoholic": true
+  },
+  "43-er": {
+    "taste": [0.8, 0.0, 0.0, 0.3, 0.1],
+    "alcoholic": true
+  }
+}
+
     },
 
 
