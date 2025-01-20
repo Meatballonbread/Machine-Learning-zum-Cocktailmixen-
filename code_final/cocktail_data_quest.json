@@ -1,0 +1,68 @@
+{
+    "taste_labels": ["süß", "sauer", "bitter", "fruchtig", "würzig"]
+
+
+    
+    
+    "ingredients": {
+      "Rum": {
+        "taste": [0.8, 0.1, 0.2, 0.1, 0.6],
+        "alcoholic": true
+      },
+      "Gin": {
+        "taste": [0.2, 0.1, 0.7, 0.2, 0.8],
+        "alcoholic": true
+      },
+      "Wodka": {
+        "taste": [0.1, 0.0, 0.1, 0.1, 0.1],
+        "alcoholic": true
+      },
+      "Zitronensaft": {
+        "taste": [0.1, 0.9, 0.1, 0.1, 0.1],
+        "alcoholic": false
+      },
+      "Orangensaft": {
+        "taste": [0.7, 0.3, 0.1, 0.9, 0.1],
+        "alcoholic": false
+      },
+      "Cola": {
+        "taste": [0.9, 0.1, 0.1, 0.1, 0.3],
+        "alcoholic": false
+      },
+      "Ananassaft": {
+        "taste": [0.8, 0.1, 0.1, 0.9, 0.1],
+        "alcoholic": false
+      },
+      "Kaffee": {
+        "taste": [0.1, 0.1, 0.9, 0.1, 0.1],
+        "alcoholic": false
+      }
+    },
+
+
+
+    "questions": [
+      {
+        "question": "Was bevorzugst du am Morgen?",
+        "option1_text": "Süßen Kaffee",
+        "option2_text": "Schwarzen Kaffee (bitter)",
+        "option1_taste": [0.8, 0.0, 0.2, 0.0, 0.0],
+        "option2_taste": [0.0, 0.0, 1.0, 0.0, 0.0]
+      },
+      {
+        "question": "Lieber Obstsalat oder Gemüsechips?",
+        "option1_text": "Obstsalat",
+        "option2_text": "Gemüsechips",
+        "option1_taste": [0.4, 0.0, 0.0, 0.8, 0.0],
+        "option2_taste": [0.2, 0.0, 0.2, 0.0, 0.4]
+      },
+      {
+        "question": "Gummibärchen oder Zartbitter-Schokolade?",
+        "option1_text": "Gummibärchen",
+        "option2_text": "Zartbitter-Schokolade",
+        "option1_taste": [1.0, 0.0, 0.0, 0.2, 0.0],
+        "option2_taste": [0.4, 0.0, 0.6, 0.0, 0.0]
+      }
+    ]
+  }
+  
