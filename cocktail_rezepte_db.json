@@ -1,5 +1,11 @@
 {
     "(('Amaretto', 39), ('Baileys', 39), ('Chili-Wodka', 39), ('Alkohol', 2))": [
         3
+    ],
+    "(('Amaretto', 39), ('Tequila', 39), ('Gin', 39), ('Alkohol', 2))": [
+        5
+    ],
+    "(('Amaretto', 39), ('Gin', 39), ('Aperol', 39), ('Chili-Wodka', 39), ('Alkohol', 2))": [
+        2
     ]
 }
