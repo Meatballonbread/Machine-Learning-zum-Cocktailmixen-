@@ -10,5 +10,11 @@
     ],
     "(('Bitter Lemon', 64.15), ('Chilisirup', 73.97), ('Cola', 61.88))": [
         1
+    ],
+    "(('Amaretto', 28.91), ('Bananenlikör', 42.85), ('Blue Curaçao', 38.73), ('Cassislikör', 50.78), ('Cointreau', 38.73))": [
+        3
+    ],
+    "(('Apfelwein', 59.83), ('Beerenlikör', 81.15), ('Drambuie', 59.02))": [
+        5
     ]
 }
