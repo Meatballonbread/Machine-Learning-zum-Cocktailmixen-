@@ -1,0 +1,144 @@
+\documentclass[12pt, a4paper]{report}
+\usepackage[ngerman]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage[numbered]{bookmark}
+\usepackage{glossaries} % Für Abkürzungs- und Symbolverzeichnis
+\usepackage{hyperref}
+\usepackage{amsmath}    
+\usepackage{amssymb}    
+\usepackage{bm}         
+
+% Glossare initialisieren
+\makeglossaries
+
+% Seitenränder konfigurieren
+\geometry{left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% Titelblatt (manuell erstellen)
+\title{
+    \vspace{2cm}
+    {\LARGE Machine Learning zum Cocktailmixen} \\
+    \vspace{1cm}
+    {\large Universität Stuttgart} \\
+    \vspace{3cm}
+}
+\author{
+   Florian Grassl \\
+    Fachsemester: 5 \\
+    \vspace{2cm} \\
+    Betreuer: Moritz Fuchsloch, Kim Glumann \\
+    Institut für Strahlwerkzeuge (IFSW) \\
+    \vspace{1cm} \\
+    Stuttgart, \today
+}
+\date{}
+
+\begin{document}
+
+\pagenumbering{Roman}
+
+% Titelblatt
+\maketitle
+\thispagestyle{empty} % Keine Seitenzahl auf Titelblatt
+
+% Aufgabenblatt (falls benötigt)
+\chapter*{Aufgabenblatt}
+\addcontentsline{toc}{chapter}{Aufgabenblatt} % Nur wenn im Inhaltsverz. erforderlich
+Hier das offizielle Aufgabenblatt einfügen oder Text formulieren.
+\newpage
+
+% Inhaltsverzeichnis
+\tableofcontents
+\clearpage
+
+
+
+% ===== Mainmatter (arabische Seitenzahlen) =====
+\pagenumbering{arabic}
+\setcounter{page}{1} % Erste Inhaltsseite = Seite 1
+
+% Inhaltsteil
+\chapter{Einleitung}
+\section{Motivation}
+
+Als OpenAI im November 2022 die erste Version des GPT-4-Modells veröffentlichte, stieg das Interesse der Öffentlichkeit an künstlicher Intelligenz und maschinellem Lernen stark an. Um die Komplexität und die Möglichkeiten von Machine Learning zu verdeutlichen, soll in dieser Arbeit ein Modell entwickelt werden, das das Mischen von Cocktails automatisiert. Dabei werden große Datensätze an Geschmacksprofilen kategorisiert und in fünf Geschmacksrichtungen (süß, sauer, bitter, fruchtig, würzig) aufgeteilt. Dies bietet die Möglichkeit, verschiedene Lernmodelle zu erlernen, zu testen und zu vergleichen.
+
+\chapter{Hauptteil}
+\section{Methodik}
+
+\subsection{Datenvorverarbeitung}
+Zu Beginn wurde eine \textbf{JSON-Datei}-Datenbank angelegt mit den Zutaten und ihren Geschmacksprofilen. Diese Datenbank wurde in ein Python-Dictionary umgewandelt und in ein Dataframe überführt. Anschließend wurden die Daten normalisiert und in Trainings- und Testdaten aufgeteilt.
+
+\subsection{Modellierung}
+Die Entwicklung des Systems zur Generierung personalisierter Cocktailrezepte basiert auf einer Kombination aus \textbf{Machine-Learning-Techniken} und \textbf{mathematischer Optimierung}. Der Prozess gliedert sich in mehrere Schritte:
+
+\subsection*{Datenbasis und Nutzerprofil}
+Zunächst werden Zutaten mit ihren Geschmacksprofilen (süß, sauer, bitter, fruchtig, würzig) sowie Fragen zur Ermittlung der Nutzerpräferenzen aus einer \textbf{JSON-Datei} geladen. Dies dient dazu, ein individuelles, gewichtetes \textbf{Nutzerprofil} zu erstellen. Sowohl die Fragen, als auch die Zutaten lassen sich flexibel erweitern, um das System an verschiedene Anwendungsfälle anzupassen, oder ein noch genaueres Geschmacksprofil zu entwickeln.
+Der Nutzer durchläuft einen \textbf{Fragebogen}, der individuelle Geschmacksvorlieben erfasst. Jede Antwort wird in ein fünfdimensionales Vektorprofil übersetzt:
+\[
+\mathbf{p}_{\text{user}} = \frac{1}{N} \sum_{i=1}^N \mathbf{q}_i,
+\]
+wobei \( \mathbf{q}_i \) das Profil der \( i \)-ten Frage und \( N \) die Anzahl der beantworteten Fragen ist. Zusätzlich wählt der Nutzer aus, ob der Cocktail alkoholisch sein soll, und legt die maximale Zutatenanzahl \( k \) fest.
+
+\subsection*{Autoencoder zur Profilrekonstruktion}
+Kern des Systems ist ein \textbf{Autoencoder}, der das Nutzerprofil komprimiert und rekonstruiert, um versteckte Muster in den Geschmacksdaten zu identifizieren. Die Wahl fiel hier auf die Autoencoder-Variante, da diese als robuste, nicht-lineare und unüberwachte Methode die besten Ergebnisse liefert und noch zusätzlich als Feature-Extraktor für ein Supervised Learning dienen könnte.  Die Architektur umfasst:
+\begin{itemize}
+  \item \textbf{Encoder}: Reduziert das 5D-Profil auf einen 3D-Latent-Space:
+    \[
+    \mathbf{z} = \text{Encoder}(\mathbf{p}_{\text{user}}),
+    \]
+  \item \textbf{Decoder}: Rekonstruiert das Profil aus dem Latent-Space:
+    \[
+    \mathbf{p}_{\text{rekon}} = \text{Decoder}(\mathbf{z}).
+    \]
+\end{itemize}
+Das Training erfolgt unüberwacht auf den Zutatendaten mit dem Loss:
+\[
+\mathcal{L} = \left\lVert \mathbf{p}_{\text{rekon}} - \mathbf{p}_{\text{user}} \right\rVert^2.
+\]
+
+\subsection*{Optimale Zutatenmischung}
+Basierend auf \( \mathbf{p}_{\text{rekon}} \) wird die ideale Mischung durch Lösung des \textbf{Least-Squares-Problems} berechnet:
+\begin{equation}
+  \min_{\mathbf{w}} \ \left\lVert \mathbf{A} \mathbf{w} - \mathbf{p}_{\text{rekon}} \right\rVert^2,
+\end{equation}
+wobei:
+\begin{itemize}
+  \item \( \mathbf{A} \in \mathbb{R}^{5 \times M} \): Matrix der Zutatenprofile (5 Geschmacksdimensionen, \( M \) Zutaten),
+  \item \( \mathbf{w} \in \mathbb{R}^M \): Gewichtsvektor der Zutaten (Anteile).
+\end{itemize}
+
+Negative Gewichte werden auf null gesetzt, und nur die Top-\( k \)-Zutaten (mit den höchsten Gewichten) bleiben erhalten. Die Gewichte werden aufsummiert und in Milliliter umgerechnet (Gesamtvolumen: 200 ml):
+\[
+\mathbf{w}_{\text{final}} = \frac{\mathbf{w}_{\text{top-}k}}{\sum \mathbf{w}_{\text{top-}k}} \times 200.
+\]
+
+
+
+
+
+
+\chapter{Schluss}
+\section{Zusammenfassung}
+In dieser Arbeit wurde ein System entwickelt, das mithilfe von Machine Learning und mathematischer Optimierung personalisierte Cocktailrezepte generiert. Der Ansatz kombiniert die Analyse von Geschmacksprofilen mit einem Autoencoder und einer Least-Squares-Optimierung, um individuelle Vorschläge zu erstellen. Die Ergebnisse zeigen, dass das System flexibel und skalierbar ist und sich für zukünftige Erweiterungen eignet.
+
+% ===== Backmatter =====
+% Literaturverzeichnis
+\bibliographystyle{alpha} % Stil an Institutsvorgaben anpassen
+\bibliography{literatur}  % BibTeX-Datei einbinden
+\addcontentsline{toc}{chapter}{Literaturverzeichnis}
+
+
+% Selbstständigkeitserklärung (ohne Seitenzahl im Inhaltsverz.)
+\clearpage
+\thispagestyle{empty}
+\section*{Selbstständigkeitserklärung}
+Ich versichere, dass ich diese Arbeit selbstständig verfasst habe.
+\vspace{2cm}
+
+\noindent
+Stuttgart, \today \hfill (Florian Grassl)
+
+\end{document}
