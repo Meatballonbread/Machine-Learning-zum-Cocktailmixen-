@@ -26,9 +26,7 @@ from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
 from datetime import datetime
 
-##############################################################################
-# 1) DATEN LADEN
-##############################################################################
+
 def load_cocktail_data():
     """
     Lädt die Cocktail-Daten (Zutaten + Fragen) aus der JSON-Datei
@@ -39,9 +37,7 @@ def load_cocktail_data():
         data = json.load(f)
     return data
 
-##############################################################################
-# 2) AUTOENCODER AUFBAUEN UND TRAINIEREN
-##############################################################################
+
 def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, epochs=500, batch_size=4):
     """
     Erstellt einen einfachen Autoencoder und trainiert ihn auf den
@@ -71,9 +67,7 @@ def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, epochs=500, b
     
     return autoencoder
 
-##############################################################################
-# 3) MIX-PROFILE ERSTELLEN (LEAST SQUARES)
-##############################################################################
+
 def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_names, k, total_volume=200.0):
     """
     1) Least Squares für die Mischung aller Zutaten:
@@ -126,9 +120,7 @@ def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_na
             mixture[name] = round(float(vol), 2)
     return mixture
 
-##############################################################################
-# 4) BEWERTUNGEN SPEICHERN UND LADEN
-##############################################################################
+
 def save_rating(user_profile, cocktail_mix, rating):
     """
     Speichert eine abgegebene Bewertung in einer JSON-Datei (z.B. 'cocktail_ratings.json').
@@ -192,9 +184,7 @@ def show_ratings():
         print(f"  - Bewertung:    {entry['rating']}")
         print()
 
-##############################################################################
-# 5) FRAGEBOGEN + COCKTAIL-GENERIERUNG
-##############################################################################
+
 def questionnaire_and_cocktail_generator(data):
     """
     - Fragebogen => user_profile
