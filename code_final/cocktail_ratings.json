@@ -1,0 +1,39 @@
+{
+  "ratings": [
+    {
+      "timestamp": "2025-01-29T13:04:29",
+      "user_profile": [
+        0.6666666666666666,
+        0.0,
+        0.13333333333333333,
+        0.06666666666666667,
+        0.13333333333333333
+      ],
+      "cocktail_mix": {
+        "Bitter Lemon": 48.5,
+        "Brauner Zucker": 34.2,
+        "Chilisirup": 38.59,
+        "Cola": 45.17,
+        "Ginger Ale": 33.54
+      },
+      "rating": 3
+    },
+    {
+      "timestamp": "2025-01-29T13:35:05",
+      "user_profile": [
+        0.5333333333333333,
+        0.0,
+        0.26666666666666666,
+        0.26666666666666666,
+        0.0
+      ],
+      "cocktail_mix": {
+        "Bitter Lemon": 49.76,
+        "Chilisirup": 46.19,
+        "Cranberrysaft": 48.49,
+        "Espresso": 55.56
+      },
+      "rating": 2
+    }
+  ]
+}

@@ -1,4 +1,3 @@
-
 """
 Dieses Programm erstellt basierend auf den Geschmackspräferenzen des Nutzers einen Cocktailvorschlag. 
 Zunächst lädt es Daten zu Zutaten (mit ihren Geschmackseigenschaften wie süß, sauer, bitter, fruchtig, würzig) 
@@ -16,9 +15,10 @@ Die Daten können beliebig erweitert werden, um die Auswahl an Zutaten und Gesch
 Wenn alkoholisch gewählt wird, wird festgelegt, dass 30% des Getränkes aus alkoholhaltigen Zutaten bestehen.
 
 Die Implemntierung von Supervides Learning ist noch in Überlegung 
+Die Implementierung von Supervised Learning ist noch in Überlegung 
 
 Author: Florian, Conrad
-Date: 20.01.2025
+Date: 29.01.2025
 """
 
 
@@ -26,14 +26,14 @@ Date: 20.01.2025
 
 
 import json
+import os
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense
 from tensorflow.keras.models import Model
+from datetime import datetime
 
-##############################################################################
-# 1) DATEN LADEN
-##############################################################################
+
 def load_cocktail_data():
     """
     Lädt die Cocktail-Daten (Zutaten + Fragen) aus der JSON-Datei
@@ -44,9 +44,7 @@ def load_cocktail_data():
         data = json.load(f)
     return data
 
-##############################################################################
-# 2) AUTOENCODER ERSTELLEN UND TRAINIEREN
-##############################################################################
+
 def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, epochs=500, batch_size=4):
     """
     Erstellt einen einfachen Autoencoder und trainiert ihn auf den
@@ -71,14 +69,12 @@ def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, epochs=500, b
         ingredient_profiles,
         epochs=epochs,
         batch_size=batch_size,
-        verbose=0
+        verbose=0  # Falls du Trainingsausgaben sehen willst, setze auf 1 oder 2
     )
     
     return autoencoder
 
-##############################################################################
-# 3) LEAST-SQUARES-MISCHUNG (TOP K)
-##############################################################################
+
 def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_names, k, total_volume=200.0):
     """
     Berechnet per Least Squares ein Gewichtungsprofil der Zutaten und wählt
@@ -96,6 +92,8 @@ def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_na
     
     # Negative Gewichte auf 0 setzen
     w = np.maximum(w, 0)
+    
+    # Normalisieren => sum(w) = 1 (falls möglich)
     sum_w = np.sum(w)
     if sum_w == 0:
         w = np.ones_like(w) / len(w)
@@ -109,6 +107,7 @@ def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_na
         mask = np.zeros_like(w, dtype=bool)
         mask[top_k_idx] = True
         w[~mask] = 0
+        # nochmal normalisieren
         sum_w_new = w.sum()
         if sum_w_new > 0:
             w /= sum_w_new
@@ -132,9 +131,71 @@ def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_na
                 mixture[ingredient] = 0.0
     return mixture
 
-##############################################################################
-# 4) FRAGEBOGEN + COCKTAIL-GENERIERUNG
-##############################################################################
+
+def save_rating(user_profile, cocktail_mix, rating):
+    """
+    Speichert eine abgegebene Bewertung in einer JSON-Datei (z.B. 'cocktail_ratings.json').
+
+    Wenn die Datei nicht existiert, wird sie neu erstellt und eine leere Struktur
+    angelegt. Anschließend wird der neue Eintrag appended.
+    """
+    ratings_file = "code_final/cocktail_ratings.json"
+    
+    # Falls Datei nicht existiert, Grundstruktur anlegen
+    if not os.path.exists(ratings_file):
+        with open(ratings_file, "w", encoding="utf-8") as f:
+            json.dump({"ratings": []}, f, ensure_ascii=False, indent=2)
+    
+    # Bestehende Daten laden
+    with open(ratings_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    # Neuen Eintrag erstellen
+    new_entry = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "user_profile": list(map(float, user_profile)),  # in float konvertieren (falls np.float)
+        "cocktail_mix": cocktail_mix,
+        "rating": rating
+    }
+    
+    # An die Liste anhängen
+    data["ratings"].append(new_entry)
+    
+    # Zurückschreiben in die Datei
+    with open(ratings_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    print("Deine Bewertung wurde erfolgreich gespeichert!")
+
+def show_ratings():
+    """
+    Liest die bereits gespeicherten Bewertungen aus der JSON-Datei und zeigt
+    sie in der Konsole an. Falls keine Bewertungen existieren, wird eine
+    entsprechende Meldung ausgegeben.
+    """
+    ratings_file = "code_final/cocktail_ratings.json"
+    
+    if not os.path.exists(ratings_file):
+        print("Keine Bewertungen vorhanden (Datei nicht gefunden).")
+        return
+    
+    with open(ratings_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    if "ratings" not in data or len(data["ratings"]) == 0:
+        print("Keine Bewertungen vorhanden.")
+        return
+    
+    print("\n--- Vorhandene Bewertungen ---")
+    for i, entry in enumerate(data["ratings"], start=1):
+        print(f"Bewertung Nr. {i}:")
+        print(f"  - Zeitpunkt:    {entry['timestamp']}")
+        print(f"  - User-Profil:  {entry['user_profile']}")
+        print(f"  - Cocktail-Mix: {entry['cocktail_mix']}")
+        print(f"  - Bewertung:    {entry['rating']}")
+        print()
+
+
 def questionnaire_and_cocktail_generator(data):
     """
     - Erfasst das Geschmacksprofil des Nutzers
@@ -164,14 +225,14 @@ def questionnaire_and_cocktail_generator(data):
     if valid_answers > 0:
         user_profile /= valid_answers
     
-    # 4.2) Alkoholisch oder nicht?
+    # Alkoholisch oder nicht?
     print("\nBevorzugst du eine alkoholische (a) oder nicht-alkoholische (n) Variante?")
     alc_pref = input("(a/n): ").strip().lower()
     if alc_pref not in ["a", "n"]:
         print("Ungültige Eingabe, setze default nicht-alkoholisch.")
         alc_pref = "n"
     
-    # 4.3) Wieviele Zutaten max.?
+    # Wieviele Zutaten max.?
     print("\nWie viele Zutaten soll der Cocktail maximal haben? (z.B. 3)")
     try:
         k = int(input("Max. Zutaten: "))
@@ -232,7 +293,7 @@ def questionnaire_and_cocktail_generator(data):
         # Beide Gruppen kombinieren
         final_mix = {**final_mix_alc, **final_mix_non_alc}
     
-    # 4.7) Ausgabe
+    # Ergebnis ausgeben
     print("\n---------- ERGEBNIS ----------")
     print(f"Dein Nutzerprofil:                   {user_profile}")
     if alc_pref == "n":
@@ -245,10 +306,47 @@ def questionnaire_and_cocktail_generator(data):
     for ingr, vol in final_mix.items():
         print(f"  - {ingr}: {vol} ml")
     print("-----------------------------")
+    
+    # Bewertung abfragen
+    print("\nMöchtest du diesen Cocktail bewerten? (j/n)")
+    rate_ans = input().strip().lower()
+    if rate_ans == "j":
+        print("Bitte gib eine Bewertung zwischen 1 (schlecht) und 5 (sehr gut) ein:")
+        try:
+            rating = int(input("Deine Bewertung: "))
+            if rating < 1 or rating > 5:
+                print("Ungültige Bewertung. Es wird keine Bewertung gespeichert.")
+            else:
+                # Bewertung speichern
+                save_rating(user_profile, final_mix, rating)
+        except ValueError:
+            print("Ungültige Eingabe, es wird keine Bewertung gespeichert.")
 
 ##############################################################################
-# 5) START DES PROGRAMMS
+# 6) MENÜ INTEGRIEREN (HAUPTTEIL)
 ##############################################################################
 if __name__ == "__main__":
     data = load_cocktail_data()
-    questionnaire_and_cocktail_generator(data)
+    
+    while True:
+        print("\n--- Willkommen beim Cocktail-Generator ---")
+        print("1. Neuen Cocktail erstellen")
+        print("2. Bewertungen anzeigen")
+        print("3. Rezeptdatenbank erweitern")
+        print("4. Beenden")
+        choice = input("Wähle eine Option: ")
+
+        if choice == "1":
+            # Neuen Cocktail erstellen
+            questionnaire_and_cocktail_generator(data)
+        elif choice == "2":
+            # Bewertungen anzeigen
+            show_ratings()
+        elif choice == "3":
+            # Rezeptdatenbank erweitern (Platzhalter)
+            print("Funktion 'Rezeptdatenbank erweitern' ist noch nicht implementiert.")
+        elif choice == "4":
+            print("Programm wird beendet. Vielen Dank!")
+            break
+        else:
+            print("Ungültige Auswahl. Bitte versuche es erneut.")

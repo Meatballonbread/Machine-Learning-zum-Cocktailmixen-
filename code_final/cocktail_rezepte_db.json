@@ -1,0 +1,23 @@
+{
+    "(('Amaretto', 39), ('Baileys', 39), ('Chili-Wodka', 39), ('Alkohol', 2))": [
+        3
+    ],
+    "(('Amaretto', 39), ('Tequila', 39), ('Gin', 39), ('Alkohol', 2))": [
+        5
+    ],
+    "(('Amaretto', 39), ('Gin', 39), ('Aperol', 39), ('Chili-Wodka', 39), ('Alkohol', 2))": [
+        2
+    ],
+    "(('Bitter Lemon', 64.15), ('Chilisirup', 73.97), ('Cola', 61.88))": [
+        1
+    ],
+    "(('Amaretto', 28.91), ('Bananenlikör', 42.85), ('Blue Curaçao', 38.73), ('Cassislikör', 50.78), ('Cointreau', 38.73))": [
+        3
+    ],
+    "(('Apfelwein', 59.83), ('Beerenlikör', 81.15), ('Drambuie', 59.02))": [
+        5
+    ],
+    "(('Bitter Lemon', 62.35), ('Chilisirup', 26.75), ('Cola', 26.18), ('Cranberrysaft', 27.09), ('Espresso', 57.64))": [
+        5
+    ]
+}
