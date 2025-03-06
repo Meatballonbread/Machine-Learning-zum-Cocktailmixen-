@@ -1,76 +1,57 @@
 \documentclass[12pt, a4paper]{report}
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{geometry}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
 \usepackage[numbered]{bookmark}
-\usepackage{glossaries} % Für Abkürzungs- und Symbolverzeichnis
-\usepackage{hyperref}
-\usepackage{amsmath}    
-\usepackage{amssymb}    
-\usepackage{bm}         
-
-% Glossare initialisieren
-\makeglossaries
-
-% Seitenränder konfigurieren
+\usepackage{setspace}
+\onehalfspacing
 \geometry{left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
-
-% Titelblatt (manuell erstellen)
-\title{
-    \vspace{2cm}
-    {\LARGE Machine Learning zum Cocktailmixen} \\
-    \vspace{1cm}
-    {\large Universität Stuttgart} \\
-    \vspace{3cm}
-}
-\author{
-   Florian Grassl \\
-    Fachsemester: 5 \\
-    \vspace{2cm} \\
-    Betreuer: Moritz Fuchsloch, Kim Glumann \\
-    Institut für Strahlwerkzeuge (IFSW) \\
-    \vspace{1cm} \\
-    Stuttgart, \today
-}
-\date{}
 
 \begin{document}
 
-\pagenumbering{Roman}
+\begin{titlepage}
+    \centering
+    \vspace*{3cm}
+    {\huge \textbf{Machine Learning zum Cocktailmixen} \par}
+    \vspace{2cm}
+    {\large Florian Grassl \par}
+    \vspace{1cm}
+    Fachsemester: 5 \par
+    \vspace{1cm}
+    Betreuer: Moritz Fuchsloch, Kim Glumann \par
+    Institut für Strahlwerkzeuge (IFSW) \par
+    Universität Stuttgart \par
+    \vfill
+    Stuttgart, \today
+\end{titlepage}
 
-% Titelblatt
-\maketitle
-\thispagestyle{empty} % Keine Seitenzahl auf Titelblatt
-
-% Aufgabenblatt (falls benötigt)
-\chapter*{Aufgabenblatt}
-\addcontentsline{toc}{chapter}{Aufgabenblatt} % Nur wenn im Inhaltsverz. erforderlich
-Hier das offizielle Aufgabenblatt einfügen oder Text formulieren.
-\newpage
-
-% Inhaltsverzeichnis
 \tableofcontents
 \clearpage
 
-
-
-% ===== Mainmatter (arabische Seitenzahlen) =====
-\pagenumbering{arabic}
-\setcounter{page}{1} % Erste Inhaltsseite = Seite 1
-
-% Inhaltsteil
 \chapter{Einleitung}
-\section{Motivation}
 
-Als OpenAI im November 2022 die erste Version des GPT-4-Modells veröffentlichte, stieg das Interesse der Öffentlichkeit an künstlicher Intelligenz und maschinellem Lernen stark an. Um die Komplexität und die Möglichkeiten von Machine Learning zu verdeutlichen, soll in dieser Arbeit ein Modell entwickelt werden, das das Mischen von Cocktails automatisiert. Dabei werden große Datensätze an Geschmacksprofilen kategorisiert und in fünf Geschmacksrichtungen (süß, sauer, bitter, fruchtig, würzig) aufgeteilt. Dies bietet die Möglichkeit, verschiedene Lernmodelle zu erlernen, zu testen und zu vergleichen.
+\section{Motivation}
+Seit Veröffentlichung von GPT-4 im November 2022 ist das öffentliche Interesse an Künstlicher Intelligenz (KI) und Machine Learning (ML) enorm gestiegen. Cocktails bieten ein ideales Anwendungsszenario für ML, da sie über einen großen Parameterraum verfügen und die menschliche Geschmackswahrnehmung sehr komplex und nicht-linear ist. Diese Arbeit demonstriert, wie ML eingesetzt werden kann, um automatisch Cocktails zu mischen, indem komplexe Geschmacksprofile analysiert und in individuelle Rezepturen übersetzt werden.
+
+\section{Stand der Technik}
+Im Bereich des maschinellen Lernens dominieren aktuell Transformer-Modelle aufgrund ihrer hervorragenden Fähigkeit, komplexe Zusammenhänge in großen und umfangreichen Datensätzen effektiv zu erfassen. Transformer sind vor allem dort überlegen, wo umfangreiche, strukturierte oder sequenzielle Daten (wie Texte oder Zeitreihen) vorhanden sind, und ermöglichen dank ihrer Architektur eine effiziente Modellierung von Abhängigkeiten über lange Distanzen hinweg. Neben Transformern finden auch andere Modelle wie Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs) und Generative Adversarial Networks (GANs) breite Anwendung. CNNs sind besonders effektiv bei räumlich strukturierten Daten wie Bildern, während RNNs typischerweise für sequentielle Daten wie Text oder Zeitreihen eingesetzt werden. GANs sind hingegen besonders für Aufgaben geeignet, bei denen neue, realistische Datensätze generiert werden sollen.
+
+Für das Cocktail-Mix-System wurde jedoch bewusst ein Autoencoder als Modell gewählt. Diese Entscheidung beruht auf mehreren spezifischen Vorteilen dieser Methode: Autoencoder benötigen vergleichsweise weniger Trainingsdaten und sind robust bei kleinen Datensätzen. Außerdem eignen sie sich besonders gut für die Rekonstruktion und Identifikation latenter Muster, wie sie in Geschmacksprofilen auftreten. Diese Wahl erlaubt es, das System ohne aufwendige Datenerhebung und Labeling effizient zu entwickeln.
+
+Alternativen wie regelbasierte Systeme oder klassische Optimierungsverfahren bieten zwar ebenfalls Lösungen, jedoch fehlt ihnen die Flexibilität und Skalierbarkeit eines ML-basierten Ansatzes. Neueste Entwicklungen im Bereich hybrider Modelle oder die Nutzung von Reinforcement Learning zur Anpassung an individuelles Nutzerfeedback könnten die Qualität und Anpassungsfähigkeit des vorgestellten Systems zukünftig weiter verbessern.
+
 
 \chapter{Hauptteil}
 \section{Methodik}
 
 \subsection{Datenvorverarbeitung}
-Zu Beginn wurde eine \textbf{JSON-Datei}-Datenbank angelegt mit den Zutaten und ihren Geschmacksprofilen. Diese Datenbank wurde in ein Python-Dictionary umgewandelt und in ein Dataframe überführt. Anschließend wurden die Daten normalisiert und in Trainings- und Testdaten aufgeteilt.
+Zu Beginn wurde eine JSON-basierte Datenbank angelegt, die alle relevanten Zutaten sowie ihre zugehörigen Geschmacksprofile (süß, sauer, bitter, fruchtig, würzig) enthält. Diese Datenbank dient als Grundlage für sämtliche Analysen und Optimierungen. Um eine effiziente Datenverarbeitung zu ermöglichen, wurde der JSON-Datensatz zunächst mithilfe von Python-Bibliotheken wie \texttt{JSON} und \texttt{pandas} eingelesen und in ein Dictionary überführt. Anschließend wurde das Dictionary mit der Bibliothek \texttt{pandas} in ein DataFrame konvertiert, um eine strukturierte Datenverarbeitung zu ermöglichen.
 
+Da unterschiedliche Zutaten teils stark voneinander abweichende Wertebereiche in ihren Geschmacksprofilen aufweisen können, wurden die Daten mittels Standardisierung normalisiert. Hierfür wurde der StandardScaler aus der Bibliothek \texttt{scikit-learn} verwendet, um die Daten auf einen Mittelwert von null und eine Standardabweichung von eins zu skalieren. Abschließend erfolgte die Aufteilung der normalisierten Daten in Trainings- und Testsets im Verhältnis 80/20, um das Modell auf Generalisierung zu prüfen und Overfitting vorzubeugen. Dies ermöglicht eine zuverlässige Bewertung der Modellqualität und Robustheit gegenüber unbekannten Daten.
 \subsection{Modellierung}
 Die Entwicklung des Systems zur Generierung personalisierter Cocktailrezepte basiert auf einer Kombination aus \textbf{Machine-Learning-Techniken} und \textbf{mathematischer Optimierung}. Der Prozess gliedert sich in mehrere Schritte:
 
@@ -101,44 +82,29 @@ Das Training erfolgt unüberwacht auf den Zutatendaten mit dem Loss:
 
 \subsection*{Optimale Zutatenmischung}
 Basierend auf \( \mathbf{p}_{\text{rekon}} \) wird die ideale Mischung durch Lösung des \textbf{Least-Squares-Problems} berechnet:
-\begin{equation}
+\[
   \min_{\mathbf{w}} \ \left\lVert \mathbf{A} \mathbf{w} - \mathbf{p}_{\text{rekon}} \right\rVert^2,
-\end{equation}
+\]
 wobei:
 \begin{itemize}
-  \item \( \mathbf{A} \in \mathbb{R}^{5 \times M} \): Matrix der Zutatenprofile (5 Geschmacksdimensionen, \( M \) Zutaten),
-  \item \( \mathbf{w} \in \mathbb{R}^M \): Gewichtsvektor der Zutaten (Anteile).
+  \item \( \mathbf{A} \in \mathbb{R}^{5 \times M} \): Matrix der Zutatenprofile,
+  \item \( \mathbf{w} \in \mathbb{R}^M \): Gewichtsvektor der Zutaten.
 \end{itemize}
-
-Negative Gewichte werden auf null gesetzt, und nur die Top-\( k \)-Zutaten (mit den höchsten Gewichten) bleiben erhalten. Die Gewichte werden aufsummiert und in Milliliter umgerechnet (Gesamtvolumen: 200 ml):
-\[
-\mathbf{w}_{\text{final}} = \frac{\mathbf{w}_{\text{top-}k}}{\sum \mathbf{w}_{\text{top-}k}} \times 200.
-\]
+Negative Gewichte werden auf null gesetzt, und nur die Top-\( k \)-Zutaten bleiben erhalten. Die Gewichte werden aufsummiert und in Milliliter umgerechnet (Gesamtvolumen: 200 ml).
 
 
+\chapter{Zusammenfassung und Ausblick}
+Die in dieser Arbeit vorgestellte Implementierung zeigt eine modulare, gut strukturierte Softwarelösung, die erfolgreich Methoden des maschinellen Lernens und der mathematischen Optimierung kombiniert, um individuelle Cocktailrezepte automatisiert zu generieren. Der entwickelte Ansatz zeichnet sich besonders durch seine Flexibilität und Anpassungsfähigkeit aus, wodurch er leicht auf neue Zutaten oder geänderte Anforderungen erweitert werden kann.
 
+Ein entscheidender Vorteil des Systems ist seine Skalierbarkeit. Die modulare Architektur erlaubt es, weitere Komponenten, wie etwa neue Modelle zur Geschmacksanalyse oder zusätzliche Optimierungsverfahren, mit geringem Aufwand zu integrieren. Trotz dieser Stärken bestehen jedoch auch einige Herausforderungen. Vor allem die Qualität und Vollständigkeit der zugrundeliegenden Datenbasis hat erheblichen Einfluss auf die Präzision und Zuverlässigkeit der generierten Rezeptvorschläge. Fehlende oder schlecht gewählte Zutatenprofile können zu weniger zufriedenstellenden Ergebnissen führen.
 
+Um diesen Herausforderungen künftig besser zu begegnen, könnten mehrere Erweiterungen sinnvoll sein. Beispielsweise wäre die Implementierung einer benutzerfreundlichen, grafischen Benutzeroberfläche denkbar, die die Interaktion mit dem System erheblich vereinfacht und den Nutzern die Möglichkeit bietet, unmittelbar Feedback zu geben. Darüber hinaus könnte der Einsatz komplexerer Modelle wie Transformer-Architekturen oder hybrider Ansätze, die traditionelle regelbasierte Systeme mit maschinellen Lernverfahren kombinieren, die Genauigkeit der Rezeptgenerierung weiter steigern.
 
+Zusätzlich könnte das Modell durch weitere Geschmacksdimensionen ergänzt werden, um die individuellen Präferenzen der Nutzer noch differenzierter abzubilden. Auch eine Erweiterung um Nutzerfeedback und adaptive Lernmechanismen wie Reinforcement Learning könnte perspektivisch die Genauigkeit und Personalisierung des Systems nachhaltig verbessern. Solche Ansätze würden nicht nur die Qualität der generierten Rezepte verbessern, sondern auch das Potenzial des Systems im kommerziellen Einsatz, etwa in Bars oder gastronomischen Betrieben, deutlich erhöhen.
 
-\chapter{Schluss}
-\section{Zusammenfassung}
-In dieser Arbeit wurde ein System entwickelt, das mithilfe von Machine Learning und mathematischer Optimierung personalisierte Cocktailrezepte generiert. Der Ansatz kombiniert die Analyse von Geschmacksprofilen mit einem Autoencoder und einer Least-Squares-Optimierung, um individuelle Vorschläge zu erstellen. Die Ergebnisse zeigen, dass das System flexibel und skalierbar ist und sich für zukünftige Erweiterungen eignet.
-
-% ===== Backmatter =====
-% Literaturverzeichnis
-\bibliographystyle{alpha} % Stil an Institutsvorgaben anpassen
-\bibliography{literatur}  % BibTeX-Datei einbinden
-\addcontentsline{toc}{chapter}{Literaturverzeichnis}
-
-
-% Selbstständigkeitserklärung (ohne Seitenzahl im Inhaltsverz.)
-\clearpage
-\thispagestyle{empty}
-\section*{Selbstständigkeitserklärung}
+\chapter*{Selbstständigkeitserklärung}
 Ich versichere, dass ich diese Arbeit selbstständig verfasst habe.
-\vspace{2cm}
 
-\noindent
 Stuttgart, \today \hfill (Florian Grassl)
 
 \end{document}

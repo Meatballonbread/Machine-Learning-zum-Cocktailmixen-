@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1738830960.14539 "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/Abgabe.tex" "Abgabe.pdf" "Abgabe" 1738830960.47978 0
-  "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/Abgabe.tex" 1738830959.1196 3679 8494c8dd6924921f1e4b14ddb86ca973 ""
+["pdflatex"] 1741277515.03027 "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/Abgabe.tex" "Abgabe.pdf" "Abgabe" 1741277515.36063 0
+  "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/Abgabe.tex" 1741277514.47815 4530 968db5719c9e06f6c66c2b45c4abd4f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
@@ -23,7 +23,6 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
-  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb" 1248133631 32726 0a1aea6fcd6468ee2cf64d891f5c43c8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb" 1248133631 24252 1e4e051947e12dfb50fee0b7f4e26e3a ""
@@ -61,8 +60,8 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1711631004.81992 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1711630954 8221423 372f162c8be74ad946f44aa79ec08b2d ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "Abgabe.aux" 1738830960.44555 700 bcda38e6542d05a7758605ccc5fc34ad "pdflatex"
-  "Abgabe.tex" 1738830959.1196 3679 8494c8dd6924921f1e4b14ddb86ca973 ""
+  "Abgabe.aux" 1741277515.32674 879 f16e38e9f7bb91c8cadda76d7325cfd0 "pdflatex"
+  "Abgabe.tex" 1741277514.47815 4530 968db5719c9e06f6c66c2b45c4abd4f4 ""
   (generated)
   "Abgabe.aux"
   "Abgabe.log"

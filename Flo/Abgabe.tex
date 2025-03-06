@@ -9,64 +9,60 @@
 
 \begin{document}
 
-\title{Machine Learning zum Cocktailmixen}
-\maketitle
-
-\section{Programmierung}
-
-Die Implementierung des Cocktailmixer-Systems erfolgte in Python unter Verwendung gängiger Bibliotheken für Machine Learning und Datenverarbeitung, insbesondere \texttt{pandas}, \texttt{numpy} und \texttt{scikit-learn}. Ziel war es, eine effiziente und skalierbare Software zu entwickeln, die Geschmacksprofile analysiert und daraus optimale Cocktailrezepte generiert.
+\section{Softwarearchitektur und Implementierung}
+Die Software zur Erstellung personalisierter Cocktailrezepte basiert auf etablierten Python-Bibliotheken wie \texttt{pandas}, \texttt{numpy}, \texttt{scikit-learn} und \texttt{TensorFlow/Keras}. Ziel der Architektur war es, eine flexible, skalierbare und wartbare Lösung zu schaffen, die komplexe Geschmacksprofile analysiert und darauf aufbauend automatisiert Cocktailrezepte generiert.
 
 \subsection{Softwarearchitektur}
-Die Architektur des Programms folgt einem modularen Aufbau, um eine einfache Erweiterung und Wartung zu ermöglichen. Die Hauptkomponenten umfassen:
+Die entwickelte Software folgt einem modularen Ansatz, der eine einfache Erweiterbarkeit und gute Wartbarkeit ermöglicht. Die Hauptkomponenten der Software umfassen:
 \begin{itemize}
-    \item \textbf{Datenverarbeitung}: Ein Modul zur Verwaltung und Vorverarbeitung von Geschmacksdaten.
-    \item \textbf{Maschinelles Lernen}: Implementierung eines Autoencoders zur Extraktion latenter Geschmackspräferenzen.
-    \item \textbf{Optimierung}: Berechnung der optimalen Zutatenmischung mittels Least-Squares-Optimierung.
-    \item \textbf{Benutzerschnittstelle}: Eine einfache API zur Interaktion mit dem System.
+    \item \textbf{Datenverwaltung}: Verwaltung und Normalisierung der Zutaten- und Geschmacksdaten.
+    \item \textbf{Machine-Learning-Modell}: Ein Autoencoder, der latente Geschmackspräferenzen extrahiert und Nutzerprofile erstellt.
+    \item \textbf{Optimierungsmodul}: Ermittlung der optimalen Cocktailmischung mittels Least-Squares-Optimierung.
+    \item \textbf{Benutzerschnittstelle}: Einfache Interaktion zur Eingabe der Präferenzen und Ausgabe der Rezeptvorschläge.
 \end{itemize}
 
-\subsection{Datenverwaltung}
-Die Basis des Systems ist eine JSON-Datenbank, die Zutaten und ihre zugehörigen Geschmacksprofile speichert. Diese Daten werden mit \texttt{pandas} in ein DataFrame überführt und für das Training sowie die Optimierung genutzt. Ein Beispiel für die Datenstruktur:
+\subsection{Datenverwaltung und Vorverarbeitung}
+Die Basis der Software bildet eine JSON-basierte Datenbank, in der Zutaten mit ihren jeweiligen Geschmacksprofilen gespeichert werden. Ein Beispiel für eine solche Struktur:
 
 \begin{verbatim}
 {
     "Zutat": "Limettensaft",
-    "Geschmack": [0.1, 0.9, 0.0, 0.2, 0.1]
+    "Geschmack": [0.1, 0.9, 0.0, 0.0, 0.0]
 }
 \end{verbatim}
 
-Die Normalisierung der Daten erfolgt mit \texttt{sklearn.preprocessing.StandardScaler}, um eine einheitliche Skalierung für das Machine-Learning-Modell zu gewährleisten.
+Diese JSON-Daten werden mittels \texttt{pandas} in ein DataFrame geladen. Vor der weiteren Verarbeitung erfolgt eine Normalisierung mit \texttt{scikit-learn}, um eine gleichmäßige Skalierung der Geschmacksdimensionen zu gewährleisten.
 
-\subsection{Modellimplementierung}
-Das Herzstück des Systems ist ein Autoencoder, der in \texttt{TensorFlow/Keras} realisiert wurde. Die Architektur umfasst einen Encoder, der das Geschmacksprofil in eine niedrigere Dimension komprimiert, und einen Decoder, der es rekonstruiert:
+\subsection{Modellierung mittels Autoencoder}
+Das zentrale Machine-Learning-Modell des Systems ist ein Autoencoder, implementiert mit \texttt{TensorFlow/Keras}. Der Autoencoder reduziert das fünf-dimensionale Geschmacksprofil auf eine niedrigdimensionale latente Repräsentation und rekonstruiert dieses wieder:
 
 \begin{verbatim}
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense
 
-input_dim = 5
-encoding_dim = 3
+input_layer = Input(shape=(5,))
+encoder = Dense(3, activation='relu')(input_layer)
+decoder = Dense(5, activation='sigmoid')(encoder)
 
-input_layer = Input(shape=(input_dim,))
-encoded = Dense(encoding_dim, activation='relu')(input_layer)
-decoded = Dense(input_dim, activation='sigmoid')(encoded)
-
-autoencoder = Model(input_layer, decoded)
+autoencoder = Model(inputs=input_layer, outputs=decoder)
 autoencoder.compile(optimizer='adam', loss='mse')
 \end{verbatim}
 
-Das Modell wird mit bestehenden Zutatendaten trainiert, um ein optimales Profiling der Nutzerpräferenzen zu ermöglichen.
+Diese Architektur erlaubt, verborgene Strukturen in den Geschmacksdaten aufzudecken und effektiv für die Optimierung zu nutzen.
+
+\subsection{Stand der Technik}
+Aktuelle Entwicklungen im Bereich der künstlichen Intelligenz setzen häufig auf Transformer-basierte Modelle, da diese gut mit komplexen und umfangreichen Datensätzen umgehen können. Für dieses Projekt wurde jedoch bewusst ein Autoencoder gewählt, da er besonders geeignet ist, kleine Datensätze nicht-linear zu komprimieren und Muster effektiv zu extrahieren. Transformer würden hier aufgrund des überschaubaren Umfangs der Daten unnötige Komplexität und Rechenleistung erfordern.
 
 \subsection{Optimierung der Zutatenmischung}
-Nachdem das Nutzerprofil rekonstruiert wurde, erfolgt die Berechnung der optimalen Zutatenmischung mittels Least-Squares-Optimierung. Dies geschieht durch Minimierung der Differenz zwischen dem rekonstruierten Profil und den vorhandenen Zutatenkombinationen:
+Auf Basis des rekonstruierten Nutzerprofils erfolgt die Berechnung der optimalen Zutatenmischung durch Lösung eines Least-Squares-Problems:
 
 \begin{equation}
 \min_{w} \| A w - p_{\text{rekon}} \|^2
 \end{equation}
 
-Hierbei ist \( A \) die Matrix der Zutatenprofile und \( w \) der Gewichtsvektor der Zutaten. Die Berechnung erfolgt mit \texttt{numpy.linalg.lstsq}.
+Hierbei beschreibt $A$ die Matrix der Zutatenprofile und $w$ den Gewichtsvektor der Zutaten. Die Berechnung erfolgt mit \texttt{numpy.linalg.lstsq}, wobei negative Gewichte ausgeschlossen und die Ergebnisse normiert werden.
 
-\subsection{Zusammenfassung}
-Die Implementierung des Cocktailmixers basiert auf einer strukturierten, modularen Architektur. Durch die Kombination von Machine Learning und mathematischer Optimierung wurde ein System entwickelt, das individuelle Cocktailrezepte generieren kann. Zukünftige Erweiterungen umfassen eine Benutzeroberfläche und die Integration zusätzlicher Zutatenprofile.
+\subsection{Zusammenfassung und Ausblick}
+Die entwickelte Software ermöglicht eine präzise, individuelle Rezeptgenerierung durch die Kombination von Machine Learning und mathematischer Optimierung. Obwohl der Ansatz flexibel und skalierbar ist, könnten Einschränkungen in der Qualität der Vorschläge auftreten, etwa wenn die Datengrundlage unvollständig oder nicht ausreichend umfangreich ist. Zukünftig könnte die Integration weiterer Zutaten, komplexerer Geschmacksprofile und tiefergehender Nutzerinteraktionen die Genauigkeit und Personalisierung weiter verbessern. Außerdem wäre eine benutzerfreundliche App-Schnittstelle denkbar, um die Anwendung attraktiver und einfacher zugänglich zu gestalten.
 
 \end{document}

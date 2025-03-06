@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.28)  6 FEB 2025 09:36
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.3.28)  6 MAR 2025 17:11
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -226,34 +226,35 @@ Package grfext Info: Graphics extension search list:
  (/usr/local/texlive/2024/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-
-LaTeX Warning: No \author given.
-
-
-Overfull \hbox (0.4502pt too wide) in paragraph at lines 17--18
-\OT1/cmr/m/n/12 g^^?angiger Bib-lio-theken f^^?ur Ma-chine Learn-ing und Daten-ver-ar-beitung, ins-beson-dere \OT1/cmtt/m/n/12 pandas\OT1/cmr/m/n/12 ,
+Overfull \hbox (3.09282pt too wide) in paragraph at lines 13--14
+\OT1/cmr/m/n/12 Die Soft-ware zur Er-stel-lung per-son-al-isierter Cock-tail-rezepte basiert auf etablierten Python-
  []
 
 
-Overfull \hbox (23.86876pt too wide) in paragraph at lines 22--23
-[]\OT1/cmr/bx/n/12 Datenverarbeitung\OT1/cmr/m/n/12 : Ein Modul zur Ver-wal-tung und Vorver-ar-beitung von Geschmacks-
+Overfull \hbox (0.54805pt too wide) in paragraph at lines 18--19
+[]\OT1/cmr/bx/n/12 Datenverwaltung\OT1/cmr/m/n/12 : Ver-wal-tung und Nor-mal-isierung der Zutaten- und Geschmacks-
  []
 
 
-Overfull \hbox (21.4121pt too wide) in paragraph at lines 29--30
-\OT1/cmr/m/n/12 Die Ba-sis des Sys-tems ist eine JSON-Datenbank, die Zu-taten und ihre zugeh^^?origen Geschmack-
+Overfull \hbox (3.37497pt too wide) in paragraph at lines 19--20
+[]\OT1/cmr/bx/n/12 Machine-Learning-Modell\OT1/cmr/m/n/12 : Ein Au-toen-coder, der la-tente Geschmack-spr^^?aferenzen
+ []
+
+
+Overfull \hbox (1.26921pt too wide) in paragraph at lines 37--38
+\OT1/cmr/m/n/12 spro-fil auf eine niedrigdi-men-sion-ale la-tente Repr^^?asentation und rekon-stru-iert dieses wieder: 
  []
 
 [1
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}]
-Overfull \hbox (1.92015pt too wide) in paragraph at lines 41--42
-\OT1/cmr/m/n/12 wurde. Die Ar-chitek-tur um-fasst einen En-coder, der das Geschmack-spro-fil in eine niedrigere
+Overfull \hbox (2.71643pt too wide) in paragraph at lines 51--52
+[]\OT1/cmr/m/n/12 Diese Ar-chitek-tur er-laubt, ver-bor-gene Struk-turen in den Geschmacks-daten aufzudecken
  []
 
 
-Overfull \hbox (11.0219pt too wide) in paragraph at lines 70--71
-\OT1/cmr/m/n/12 Zuk^^?unftige Er-weiterun-gen um-fassen eine Be-nutze-r-oberfl^^?ache und die In-te-gra-tion zus^^?atzlicher
+Overfull \hbox (12.97604pt too wide) in paragraph at lines 54--55
+\OT1/cmr/m/n/12 Aktuelle En-twick-lun-gen im Bere-ich der k^^?unstlichen In-tel-li-genz set-zen h^^?aufig auf Transformer-
  []
 
 [2] [3] (./Abgabe.aux)
@@ -263,18 +264,18 @@ L3 programming layer <2024-02-20>
  ***********
  ) 
 Here is how much of TeX's memory you used:
- 3154 strings out of 474116
- 50779 string characters out of 5743682
+ 3145 strings out of 474116
+ 50583 string characters out of 5743682
  1932187 words of memory out of 5000000
- 25485 multiletter control sequences out of 15000+600000
- 564868 words of font info for 60 fonts, out of 8000000 for 9000
+ 25476 multiletter control sequences out of 15000+600000
+ 563503 words of font info for 55 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 61i,6n,69p,482b,202s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
-Output written on Abgabe.pdf (3 pages, 103479 bytes).
+ 61i,5n,69p,776b,278s stack positions out of 10000i,1000n,20000p,200000b,200000s
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb>
+Output written on Abgabe.pdf (3 pages, 93282 bytes).
 PDF statistics:
- 60 PDF objects out of 1000 (max. 8388607)
- 36 compressed objects within 1 object stream
+ 55 PDF objects out of 1000 (max. 8388607)
+ 33 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
