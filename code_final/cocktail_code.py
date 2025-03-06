@@ -12,11 +12,18 @@ Das Ergebnis ist ein individueller Cocktailvorschlag mit Mengenangaben für die 
 Die Mischung werden umso genauer, umso mehr Daten sich in der JSON-Datei befinden. 
 Die Daten können beliebig erweitert werden, um die Auswahl an Zutaten und Geschmacksprofilen zu vergrößern.
 
+Wenn alkoholisch gewählt wird, wird festgelegt, dass 30% des Getränkes aus alkoholhaltigen Zutaten bestehen.
+
+Die Implemntierung von Supervides Learning ist noch in Überlegung 
 Die Implementierung von Supervised Learning ist noch in Überlegung 
 
 Author: Florian, Conrad
 Date: 29.01.2025
 """
+
+
+
+
 
 import json
 import os
@@ -70,34 +77,30 @@ def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, epochs=500, b
 
 def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_names, k, total_volume=200.0):
     """
-    1) Least Squares für die Mischung aller Zutaten:
-         min || A w - reconstructed_profile ||^2
-       A = ingredient_profiles^T
-    2) Negative Gewichte => 0
-    3) Normalisieren => sum(w) = 1
-    4) Nur Top k Gewichte behalten => Rest 0 => Normalisieren
-    5) Gewichte * total_volume => ml
-
-    Rückgabe: dict {Zutat: ml}
+    Berechnet per Least Squares ein Gewichtungsprofil der Zutaten und wählt
+    anschließend nur die Top k Zutaten aus, normalisiert die Gewichte und
+    rechnet sie auf ml um.
+    
+    Rückgabe: dict {Zutat: ml} mit genau k Zutaten (eventuell werden Zutaten
+              mit 0 ml hinzugefügt, wenn weniger als k Zutaten aktiv waren).
     """
     A = ingredient_profiles.T  # shape (features, M)
     b = reconstructed_profile
     
-    # unbeschränktes least-squares
+    # Unbeschränktes Least-Squares
     w, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
     
-    # Negative auf 0 setzen
+    # Negative Gewichte auf 0 setzen
     w = np.maximum(w, 0)
     
     # Normalisieren => sum(w) = 1 (falls möglich)
     sum_w = np.sum(w)
     if sum_w == 0:
-        # Fallback => Gleichverteilung
         w = np.ones_like(w) / len(w)
     else:
         w /= sum_w
     
-    # Nur Top k behalten
+    # Nur Top k Gewichte behalten
     if k < len(w):
         sorted_idx = np.argsort(-w)  # absteigend sortiert
         top_k_idx = sorted_idx[:k]
@@ -111,13 +114,21 @@ def create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_na
         else:
             w[mask] = 1.0 / k
 
-    # ml anstatt (dimensionsloser) Gewichte
+    # Berechne Volumen in ml
     volumes = w * total_volume
     
     mixture = {}
     for name, vol in zip(ingredient_names, volumes):
         if vol > 1e-6:
             mixture[name] = round(float(vol), 2)
+    
+    # Falls weniger als k Zutaten aktiv sind, ergänzen wir mit 0 ml
+    if len(mixture) < k:
+        remaining_ingredients = [name for name in ingredient_names if name not in mixture]
+        for i in range(k - len(mixture)):
+            if remaining_ingredients:
+                ingredient = remaining_ingredients.pop(0)
+                mixture[ingredient] = 0.0
     return mixture
 
 
@@ -187,25 +198,21 @@ def show_ratings():
 
 def questionnaire_and_cocktail_generator(data):
     """
-    - Fragebogen => user_profile
-    - Frage: Alkoholisch (a) oder nicht (n)?
-    - Frage: wieviele Zutaten max. (k)?
-    - Filter Zutaten nach alcoholic-Flag
-    - Trainiere Autoencoder => rekonstruierte Taste
-    - Mische maximal k Zutaten => Ausgabe
-    - Anschließend Bewertung abfragen und speichern.
+    - Erfasst das Geschmacksprofil des Nutzers
+    - Fragt nach bevorzugter Variante (alkoholisch/nicht-alkoholisch)
+    - Fragt nach der gewünschten Anzahl k Zutaten
+    - Bei nicht-alkoholischer Variante: Wähle k nicht-alkoholische Zutaten.
+    - Bei alkoholischer Variante: Teile k in zwei Gruppen (z. B. 30% alkoholisch, 70% nicht-alkoholisch)
+      und berechne die Mischungen separat, sodass insgesamt genau k Zutaten ausgewählt werden.
     """
+    # 4.1) Geschmacks-Profil sammeln
     questions = data["questions"]
-    
-    # Geschmacks-Profil sammeln (5-dim. Vektor, je nach Daten)
     user_profile = np.zeros(5)
     valid_answers = 0
-    
     for q in questions:
         print("\n" + q["question"])
         print("1) " + q["option1_text"])
         print("2) " + q["option2_text"])
-        
         ans = input("Deine Wahl (1/2): ")
         if ans == "1":
             user_profile += np.array(q["option1_taste"])
@@ -215,7 +222,6 @@ def questionnaire_and_cocktail_generator(data):
             valid_answers += 1
         else:
             print("Ungültige Eingabe, überspringe diese Frage.")
-    
     if valid_answers > 0:
         user_profile /= valid_answers
     
@@ -237,54 +243,68 @@ def questionnaire_and_cocktail_generator(data):
         print("Ungültige Eingabe, setze k=3")
         k = 3
     
-    # Zutaten nach alc_pref filtern
+    total_volume = 200.0
     all_ingredients = data["ingredients"]
     
-    if alc_pref == "a":
-        # Alkoholisch + nicht-alkoholisch erlauben
-        filtered_items = [
-            (name, info["taste"])
-            for name, info in all_ingredients.items()
-        ]
+    if alc_pref == "n":
+        # Nur nicht-alkoholische Zutaten verwenden
+        filtered_items = [(name, info["taste"]) for name, info in all_ingredients.items() if not info["alcoholic"]]
+        if not filtered_items:
+            print("Keine passenden Zutaten gefunden!")
+            return
+        ingredient_names = [x[0] for x in filtered_items]
+        ingredient_profiles = np.array([x[1] for x in filtered_items])
+        autoencoder = build_and_train_autoencoder(ingredient_profiles)
+        reconstructed_profile = autoencoder.predict(np.array([user_profile]))[0]
+        final_mix = create_mix_profile(reconstructed_profile, ingredient_profiles, ingredient_names, k, total_volume=total_volume)
+    
     else:
-        # Nur nicht-alkoholische Zutaten
-        filtered_items = [
-            (name, info["taste"])
-            for name, info in all_ingredients.items()
-            if info["alcoholic"] is False
-        ]
-    
-    if not filtered_items:
-        print("Keine passenden Zutaten gefunden!")
-        return
-    
-    ingredient_names = [x[0] for x in filtered_items]
-    ingredient_profiles = np.array([x[1] for x in filtered_items])
-    
-    # Autoencoder => Rekonstruktion
-    autoencoder = build_and_train_autoencoder(ingredient_profiles)
-    reconstructed_profile = autoencoder.predict(np.array([user_profile]))[0]
-    
-    # Mischung berechnen
-    total_volume = 200.0
-    final_mix = create_mix_profile(
-        reconstructed_profile,
-        ingredient_profiles,
-        ingredient_names,
-        k,
-        total_volume=total_volume
-    )
+        # Alkoholische Variante: Wir teilen k in zwei Gruppen auf:
+        # z.B. 30% der Zutaten (mindestens 1) sollen alkoholisch sein, der Rest nicht-alkoholisch.
+        num_alc = max(1, round(0.3 * k))
+        num_non_alc = k - num_alc
+        
+        # Filter Zutaten
+        alcoholic_items = [(name, info["taste"]) for name, info in all_ingredients.items() if info["alcoholic"]]
+        non_alcoholic_items = [(name, info["taste"]) for name, info in all_ingredients.items() if not info["alcoholic"]]
+        
+        # Falls in einer Gruppe nicht genügend Zutaten vorhanden sind, passen wir die Verteilung an.
+        if len(alcoholic_items) < num_alc:
+            num_alc = len(alcoholic_items)
+            num_non_alc = k - num_alc
+        if len(non_alcoholic_items) < num_non_alc:
+            num_non_alc = len(non_alcoholic_items)
+            num_alc = k - num_non_alc
+        
+        # Alkoholische Gruppe
+        alc_names = [x[0] for x in alcoholic_items]
+        alc_profiles = np.array([x[1] for x in alcoholic_items])
+        autoencoder_alc = build_and_train_autoencoder(alc_profiles)
+        reconstructed_profile_alc = autoencoder_alc.predict(np.array([user_profile]))[0]
+        final_mix_alc = create_mix_profile(reconstructed_profile_alc, alc_profiles, alc_names, num_alc, total_volume=total_volume * 0.3)
+        
+        # Nicht-alkoholische Gruppe
+        non_alc_names = [x[0] for x in non_alcoholic_items]
+        non_alc_profiles = np.array([x[1] for x in non_alcoholic_items])
+        autoencoder_non_alc = build_and_train_autoencoder(non_alc_profiles)
+        reconstructed_profile_non_alc = autoencoder_non_alc.predict(np.array([user_profile]))[0]
+        final_mix_non_alc = create_mix_profile(reconstructed_profile_non_alc, non_alc_profiles, non_alc_names, num_non_alc, total_volume=total_volume * 0.7)
+        
+        # Beide Gruppen kombinieren
+        final_mix = {**final_mix_alc, **final_mix_non_alc}
     
     # Ergebnis ausgeben
     print("\n---------- ERGEBNIS ----------")
-    print(f"Dein Nutzerprofil:                    {user_profile}")
-    print(f"Rekonstruiertes Profil (Autoencoder): {reconstructed_profile}")
+    print(f"Dein Nutzerprofil:                   {user_profile}")
+    if alc_pref == "n":
+        print(f"Rekonstruiertes Profil (Autoencoder): {reconstructed_profile}")
+    else:
+        print(f"Rekonstruiertes Profil (alkoholisch): {reconstructed_profile_alc}")
+        print(f"Rekonstruiertes Profil (nicht-alkoholisch): {reconstructed_profile_non_alc}")
     print(f"\nVariante: {'alkoholisch' if alc_pref=='a' else 'nicht-alkoholisch'}")
-    print(f"Mischung aus maximal {k} Zutaten (von {len(filtered_items)} möglichen):")
-    
+    print(f"Mischung aus genau {k} Zutaten:")
     for ingr, vol in final_mix.items():
         print(f"  - {ingr}: {vol} ml")
-    
     print("-----------------------------")
     
     # Bewertung abfragen

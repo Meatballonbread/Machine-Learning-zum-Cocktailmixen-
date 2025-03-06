@@ -34,6 +34,23 @@
         "Espresso": 55.56
       },
       "rating": 2
+    },
+    {
+      "timestamp": "2025-03-04T15:34:30",
+      "user_profile": [
+        0.12333333333333334,
+        0.0,
+        0.26666666666666666,
+        0.26666666666666666,
+        0.0
+      ],
+      "cocktail_mix": {
+        "Espresso": 44.87,
+        "Ginger Beer": 51.62,
+        "Guavensaft": 46.18,
+        "Rote-Bete-Saft": 57.33
+      },
+      "rating": 2
     }
   ]
 }
