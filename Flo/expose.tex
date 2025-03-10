@@ -8,6 +8,7 @@
 \usepackage{amssymb}
 \usepackage[numbered]{bookmark}
 \usepackage{setspace}
+\usepackage{hyperref}
 \onehalfspacing
 \geometry{left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
 
@@ -38,73 +39,89 @@
 Seit Veröffentlichung von GPT-4 im November 2022 ist das öffentliche Interesse an Künstlicher Intelligenz (KI) und Machine Learning (ML) enorm gestiegen. Cocktails bieten ein ideales Anwendungsszenario für ML, da sie über einen großen Parameterraum verfügen und die menschliche Geschmackswahrnehmung sehr komplex und nicht-linear ist. Diese Arbeit demonstriert, wie ML eingesetzt werden kann, um automatisch Cocktails zu mischen, indem komplexe Geschmacksprofile analysiert und in individuelle Rezepturen übersetzt werden.
 
 \section{Stand der Technik}
-Im Bereich des maschinellen Lernens dominieren aktuell Transformer-Modelle aufgrund ihrer hervorragenden Fähigkeit, komplexe Zusammenhänge in großen und umfangreichen Datensätzen effektiv zu erfassen. Transformer sind vor allem dort überlegen, wo umfangreiche, strukturierte oder sequenzielle Daten (wie Texte oder Zeitreihen) vorhanden sind, und ermöglichen dank ihrer Architektur eine effiziente Modellierung von Abhängigkeiten über lange Distanzen hinweg. Neben Transformern finden auch andere Modelle wie Convolutional Neural Networks (CNNs), Recurrent Neural Networks (RNNs) und Generative Adversarial Networks (GANs) breite Anwendung. CNNs sind besonders effektiv bei räumlich strukturierten Daten wie Bildern, während RNNs typischerweise für sequentielle Daten wie Text oder Zeitreihen eingesetzt werden. GANs sind hingegen besonders für Aufgaben geeignet, bei denen neue, realistische Datensätze generiert werden sollen.
-
-Für das Cocktail-Mix-System wurde jedoch bewusst ein Autoencoder als Modell gewählt. Diese Entscheidung beruht auf mehreren spezifischen Vorteilen dieser Methode: Autoencoder benötigen vergleichsweise weniger Trainingsdaten und sind robust bei kleinen Datensätzen. Außerdem eignen sie sich besonders gut für die Rekonstruktion und Identifikation latenter Muster, wie sie in Geschmacksprofilen auftreten. Diese Wahl erlaubt es, das System ohne aufwendige Datenerhebung und Labeling effizient zu entwickeln.
-
-Alternativen wie regelbasierte Systeme oder klassische Optimierungsverfahren bieten zwar ebenfalls Lösungen, jedoch fehlt ihnen die Flexibilität und Skalierbarkeit eines ML-basierten Ansatzes. Neueste Entwicklungen im Bereich hybrider Modelle oder die Nutzung von Reinforcement Learning zur Anpassung an individuelles Nutzerfeedback könnten die Qualität und Anpassungsfähigkeit des vorgestellten Systems zukünftig weiter verbessern.
-
+Im Bereich des maschinellen Lernens dominieren aktuell Transformer-Modelle aufgrund ihrer Fähigkeit, komplexe Zusammenhänge in umfangreichen Datensätzen effektiv zu erfassen \cite{vaswani2017attention}. Neben Transformern werden auch andere Modelle wie CNNs (für Bilder), RNNs (für sequentielle Daten) und GANs (zur Daten-Generierung) genutzt \cite{goodfellow2014generative}. Für diese Arbeit wurde jedoch bewusst ein Autoencoder gewählt, da dieser robust bei kleinen Datensätzen ist und besonders gut zur Rekonstruktion latenter Muster geeignet ist \cite{goodfellow2016deep}. Neuere Trends beinhalten hybride Modelle und Reinforcement Learning, um Nutzerfeedback einzubeziehen \cite{sutton2018reinforcement}.
 
 \chapter{Hauptteil}
 \section{Methodik}
 
 \subsection{Datenvorverarbeitung}
-Zu Beginn wurde eine JSON-basierte Datenbank angelegt, die alle relevanten Zutaten sowie ihre zugehörigen Geschmacksprofile (süß, sauer, bitter, fruchtig, würzig) enthält. Diese Datenbank dient als Grundlage für sämtliche Analysen und Optimierungen. Um eine effiziente Datenverarbeitung zu ermöglichen, wurde der JSON-Datensatz zunächst mithilfe von Python-Bibliotheken wie \texttt{JSON} und \texttt{pandas} eingelesen und in ein Dictionary überführt. Anschließend wurde das Dictionary mit der Bibliothek \texttt{pandas} in ein DataFrame konvertiert, um eine strukturierte Datenverarbeitung zu ermöglichen.
+Zu Beginn wurde eine JSON-basierte Datenbank angelegt, die alle relevanten Zutaten
+sowie ihre zugehörigen Geschmacksprofile (süß, sauer, bitter, fruchtig, würzig) enthält.
+Diese Datenbank dient als Grundlage für sämtliche Analysen und Optimierungen. Um
+eine effiziente Datenverarbeitung zu ermöglichen, wurde der JSON-Datensatz zunächst
+mithilfe von Python-Bibliotheken wie JSON und pandas eingelesen und in ein Dictio-
+nary überführt. Anschließend wurde das Dictionary mit der Bibliothek pandas in ein
+DataFrame konvertiert, um eine strukturierte Datenverarbeitung zu ermöglichen.
+Da unterschiedliche Zutaten teils stark voneinander abweichende Wertebereiche in
+ihren Geschmacksprofilen aufweisen können, wurden die Daten mittels Standardisierung normalisiert. Hierfür wurde der StandardScaler aus der Bibliothek scikit-learn
+verwendet, um die Daten auf einen Mittelwert von null und eine Standardabweichung
+von eins zu skalieren. Abschließend erfolgte die Aufteilung der normalisierten Daten
+in Trainings- und Testsets im Verhältnis 80/20, um das Modell auf Generalisierung zu
+prüfen und Overfitting vorzubeugen. Dies ermöglicht eine zuverlässige Bewertung der
+Modellqualität und Robustheit gegenüber unbekannten Daten.
 
-Da unterschiedliche Zutaten teils stark voneinander abweichende Wertebereiche in ihren Geschmacksprofilen aufweisen können, wurden die Daten mittels Standardisierung normalisiert. Hierfür wurde der StandardScaler aus der Bibliothek \texttt{scikit-learn} verwendet, um die Daten auf einen Mittelwert von null und eine Standardabweichung von eins zu skalieren. Abschließend erfolgte die Aufteilung der normalisierten Daten in Trainings- und Testsets im Verhältnis 80/20, um das Modell auf Generalisierung zu prüfen und Overfitting vorzubeugen. Dies ermöglicht eine zuverlässige Bewertung der Modellqualität und Robustheit gegenüber unbekannten Daten.
 \subsection{Modellierung}
-Die Entwicklung des Systems zur Generierung personalisierter Cocktailrezepte basiert auf einer Kombination aus \textbf{Machine-Learning-Techniken} und \textbf{mathematischer Optimierung}. Der Prozess gliedert sich in mehrere Schritte:
+Die Entwicklung des Systems basiert auf einer Kombination aus Machine-Learning-Techniken und mathematischer Optimierung.
 
 \subsection*{Datenbasis und Nutzerprofil}
-Zunächst werden Zutaten mit ihren Geschmacksprofilen (süß, sauer, bitter, fruchtig, würzig) sowie Fragen zur Ermittlung der Nutzerpräferenzen aus einer \textbf{JSON-Datei} geladen. Dies dient dazu, ein individuelles, gewichtetes \textbf{Nutzerprofil} zu erstellen. Sowohl die Fragen, als auch die Zutaten lassen sich flexibel erweitern, um das System an verschiedene Anwendungsfälle anzupassen, oder ein noch genaueres Geschmacksprofil zu entwickeln.
-Der Nutzer durchläuft einen \textbf{Fragebogen}, der individuelle Geschmacksvorlieben erfasst. Jede Antwort wird in ein fünfdimensionales Vektorprofil übersetzt:
+Zunächst werden Zutaten mit Geschmacksprofilen und nutzerbezogene Fragen aus einer JSON-Datei geladen, um ein individuelles, gewichtetes Nutzerprofil zu erstellen. Der Nutzer durchläuft hierfür einen Fragebogen. Jede Antwort wird zu einem fünfdimensionalen Vektorprofil aggregiert:
 \[
-\mathbf{p}_{\text{user}} = \frac{1}{N} \sum_{i=1}^N \mathbf{q}_i,
+\mathbf{p}_{\text{user}} = \frac{1}{N} \sum_{i=1}^{N} \mathbf{q}_i,
 \]
-wobei \( \mathbf{q}_i \) das Profil der \( i \)-ten Frage und \( N \) die Anzahl der beantworteten Fragen ist. Zusätzlich wählt der Nutzer aus, ob der Cocktail alkoholisch sein soll, und legt die maximale Zutatenanzahl \( k \) fest.
+wobei \(\mathbf{q}_i\) das Profil der i-ten Frage ist und \(N\) die Gesamtanzahl beantworteter Fragen. Zusätzlich entscheidet der Nutzer, ob der Cocktail alkoholisch sein soll, und legt die maximale Zutatenzahl \(k\) fest.
 
 \subsection*{Autoencoder zur Profilrekonstruktion}
-Kern des Systems ist ein \textbf{Autoencoder}, der das Nutzerprofil komprimiert und rekonstruiert, um versteckte Muster in den Geschmacksdaten zu identifizieren. Die Wahl fiel hier auf die Autoencoder-Variante, da diese als robuste, nicht-lineare und unüberwachte Methode die besten Ergebnisse liefert und noch zusätzlich als Feature-Extraktor für ein Supervised Learning dienen könnte.  Die Architektur umfasst:
+Das zentrale Element des Systems ist ein Autoencoder, der das Nutzerprofil komprimiert und rekonstruiert. Der Autoencoder besteht aus:
 \begin{itemize}
-  \item \textbf{Encoder}: Reduziert das 5D-Profil auf einen 3D-Latent-Space:
-    \[
-    \mathbf{z} = \text{Encoder}(\mathbf{p}_{\text{user}}),
-    \]
+  \item \textbf{Encoder}: Komprimiert das Nutzerprofil auf einen dreidimensionalen Latent-Space:
+    \[\mathbf{z} = \text{Encoder}(\mathbf{p}_{\text{user}})\]
   \item \textbf{Decoder}: Rekonstruiert das Profil aus dem Latent-Space:
-    \[
-    \mathbf{p}_{\text{rekon}} = \text{Decoder}(\mathbf{z}).
-    \]
+    \[\mathbf{p}_{\text{rekon}} = \text{Decoder}(\mathbf{z})\]
 \end{itemize}
-Das Training erfolgt unüberwacht auf den Zutatendaten mit dem Loss:
-\[
-\mathcal{L} = \left\lVert \mathbf{p}_{\text{rekon}} - \mathbf{p}_{\text{user}} \right\rVert^2.
-\]
+Das Training erfolgt unüberwacht anhand der Geschmacksdaten mittels Loss-Funktion:
+\[\mathcal{L} = \left\lVert \mathbf{p}_{\text{rekon}} - \mathbf{p}_{\text{user}} \right\rVert^2\]
 
 \subsection*{Optimale Zutatenmischung}
-Basierend auf \( \mathbf{p}_{\text{rekon}} \) wird die ideale Mischung durch Lösung des \textbf{Least-Squares-Problems} berechnet:
-\[
-  \min_{\mathbf{w}} \ \left\lVert \mathbf{A} \mathbf{w} - \mathbf{p}_{\text{rekon}} \right\rVert^2,
-\]
+Ausgehend von \( \mathbf{p}_{\text{rekon}} \) wird die optimale Mischung per Least-Squares berechnet:
+\[\min_{\mathbf{w}} \ \left\lVert \mathbf{A}\mathbf{w} - \mathbf{p}_{\text{rekon}} \right\rVert^2\]
 wobei:
 \begin{itemize}
-  \item \( \mathbf{A} \in \mathbb{R}^{5 \times M} \): Matrix der Zutatenprofile,
-  \item \( \mathbf{w} \in \mathbb{R}^M \): Gewichtsvektor der Zutaten.
+  \item \(\mathbf{A} \in \mathbb{R}^{5 \times M}\): Matrix der Zutatenprofile,
+  \item \(\mathbf{w}\in \mathbb{R}^M\): Gewichtsvektor der Zutaten.
 \end{itemize}
-Negative Gewichte werden auf null gesetzt, und nur die Top-\( k \)-Zutaten bleiben erhalten. Die Gewichte werden aufsummiert und in Milliliter umgerechnet (Gesamtvolumen: 200 ml).
-
+Negative Gewichte werden eliminiert, anschließend werden nur die Top-\(k\)-Zutaten verwendet und deren Anteile auf ein Gesamtvolumen von 200 ml normiert.
 
 \chapter{Zusammenfassung und Ausblick}
-Die in dieser Arbeit vorgestellte Implementierung zeigt eine modulare, gut strukturierte Softwarelösung, die erfolgreich Methoden des maschinellen Lernens und der mathematischen Optimierung kombiniert, um individuelle Cocktailrezepte automatisiert zu generieren. Der entwickelte Ansatz zeichnet sich besonders durch seine Flexibilität und Anpassungsfähigkeit aus, wodurch er leicht auf neue Zutaten oder geänderte Anforderungen erweitert werden kann.
+Die in dieser Arbeit vorgestellte Implementierung zeigt eine modulare, gut struktu-
+rierte Softwarelösung, die erfolgreich Methoden des maschinellen Lernens und der ma-
+thematischen Optimierung kombiniert, um individuelle Cocktailrezepte automatisiert
+zu generieren. Der entwickelte Ansatz zeichnet sich besonders durch seine Flexibili-
+tät und Anpassungsfähigkeit aus, wodurch er leicht auf neue Zutaten oder geänderte
+Anforderungen erweitert werden kann.
+Ein entscheidender Vorteil des Systems ist seine Skalierbarkeit. Die modulare Architektur erlaubt es, weitere Komponenten, wie etwa neue Modelle zur Geschmacksanalyse
+oder zusätzliche Optimierungsverfahren, mit geringem Aufwand zu integrieren. Trotz
+dieser Stärken bestehen jedoch auch einige Herausforderungen. Vor allem die Qualität
+und Vollständigkeit der zugrundeliegenden Datenbasis hat erheblichen Einfluss auf die
+Präzision und Zuverlässigkeit der generierten Rezeptvorschläge. Fehlende oder schlecht
+gewählte Zutatenprofile können zu weniger zufriedenstellenden Ergebnissen führen.
+Um diesen Herausforderungen künftig besser zu begegnen, könnten mehrere Erweiterungen sinnvoll sein. Beispielsweise wäre die Implementierung einer benutzerfreundlichen, grafischen Benutzeroberfläche denkbar, die die Interaktion mit dem System
+erheblich vereinfacht und den Nutzern die Möglichkeit bietet, unmittelbar Feedback
+zu geben. Darüber hinaus könnte der Einsatz komplexerer Modelle wie Transformer-
+Architekturen oder hybrider Ansätze, die traditionelle regelbasierte Systeme mit maschinellen Lernverfahren kombinieren, die Genauigkeit der Rezeptgenerierung weiter
+steigern.
+Zusätzlich könnte das Modell durch weitere Geschmacksdimensionen ergänzt werden, um die individuellen Präferenzen der Nutzer noch differenzierter abzubilden. Auch
+eine Erweiterung um Nutzerfeedback und adaptive Lernmechanismen wie ReinforcementLearning könnte perspektivisch die Genauigkeit und Personalisierung des Systems
+nachhaltig verbessern. Solche Ansätze würden nicht nur die Qualität der generierten
+Rezepte verbessern, sondern auch das Potenzial des Systems im kommerziellen Einsatz,
+etwa in Bars oder gastronomischen Betrieben, deutlich erhöhen.
+\bibliographystyle{alpha}
+\bibliography{literatur}
 
-Ein entscheidender Vorteil des Systems ist seine Skalierbarkeit. Die modulare Architektur erlaubt es, weitere Komponenten, wie etwa neue Modelle zur Geschmacksanalyse oder zusätzliche Optimierungsverfahren, mit geringem Aufwand zu integrieren. Trotz dieser Stärken bestehen jedoch auch einige Herausforderungen. Vor allem die Qualität und Vollständigkeit der zugrundeliegenden Datenbasis hat erheblichen Einfluss auf die Präzision und Zuverlässigkeit der generierten Rezeptvorschläge. Fehlende oder schlecht gewählte Zutatenprofile können zu weniger zufriedenstellenden Ergebnissen führen.
-
-Um diesen Herausforderungen künftig besser zu begegnen, könnten mehrere Erweiterungen sinnvoll sein. Beispielsweise wäre die Implementierung einer benutzerfreundlichen, grafischen Benutzeroberfläche denkbar, die die Interaktion mit dem System erheblich vereinfacht und den Nutzern die Möglichkeit bietet, unmittelbar Feedback zu geben. Darüber hinaus könnte der Einsatz komplexerer Modelle wie Transformer-Architekturen oder hybrider Ansätze, die traditionelle regelbasierte Systeme mit maschinellen Lernverfahren kombinieren, die Genauigkeit der Rezeptgenerierung weiter steigern.
-
-Zusätzlich könnte das Modell durch weitere Geschmacksdimensionen ergänzt werden, um die individuellen Präferenzen der Nutzer noch differenzierter abzubilden. Auch eine Erweiterung um Nutzerfeedback und adaptive Lernmechanismen wie Reinforcement Learning könnte perspektivisch die Genauigkeit und Personalisierung des Systems nachhaltig verbessern. Solche Ansätze würden nicht nur die Qualität der generierten Rezepte verbessern, sondern auch das Potenzial des Systems im kommerziellen Einsatz, etwa in Bars oder gastronomischen Betrieben, deutlich erhöhen.
 
 \chapter*{Selbstständigkeitserklärung}
 Ich versichere, dass ich diese Arbeit selbstständig verfasst habe.
 
+\vspace{2cm}
 Stuttgart, \today \hfill (Florian Grassl)
 
 \end{document}

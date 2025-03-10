@@ -1,6 +1,14 @@
 # Fdb version 4
-["pdflatex"] 1741280280.11935 "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/expose.tex" "expose.pdf" "expose" 1741280280.58844 0
-  "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/expose.tex" 1741280279.92964 9902 ea967c36b7ece9bb4e3cf31d950c4121 ""
+["bibtex expose"] 1741339207.37498 "expose.aux" "expose.bbl" "expose" 1741339500.49243 0
+  "./literatur.bib" 1741338500.65882 977 e9c93863d11202373b68d05571f7a1b7 ""
+  "/usr/local/texlive/2024/texmf-dist/bibtex/bst/base/alpha.bst" 1292289607 23907 a5f93555796fb564b924339521f10a7c ""
+  "expose.aux" 1741339500.20697 3938 d5486ad44c1b72f700aad0854728347d "pdflatex"
+  (generated)
+  "expose.bbl"
+  "expose.blg"
+  (rewritten before read)
+["pdflatex"] 1741339499.50068 "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/expose.tex" "expose.pdf" "expose" 1741339500.49257 0
+  "/Users/floriangrassl/Documents/Machine-Learning-zum-Cocktailmixen-/Flo/expose.tex" 1741339499.26012 7982 d72f53293bff62d7d7f3c9e8a6bdaace ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-t1.enc" 1136849721 2971 def0b6c1f0b107b3b936def894055589 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -14,7 +22,7 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ecrm1440.tfm" 1136768653 3584 3169d30142b88a27d4ab0e3468e963a2 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ecrm1728.tfm" 1136768653 3584 3c76ccb63eda935a68ba65ba9da29f1a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ecrm2488.tfm" 1136768653 3584 406ad7b70d9a41f7833f92b6313150c8 ""
-  "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ectt1200.tfm" 1136768653 1536 487c9b46984a816c7ed238d0674595c7 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/ecti1200.tfm" 1136768653 3072 8b5a64dc91775463bc95e2d818524028 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm" 1136768653 1536 74b7293ec3713bb7fdca8dd1bd1f469c ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1246382020 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -52,7 +60,7 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb" 1215737283 164227 3df942b4ff2124425d8fb1b6d3e01c7a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb" 1215737283 136101 f533469f523533d38317ab5729d00c8a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1440.pfb" 1215737283 131078 d96015a2fa5c350129e933ca070b2484 ""
-  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sftt1200.pfb" 1215737283 167085 68de377d2744a68a88fa40a1f610615a ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfti1200.pfb" 1215737283 198221 ca5aa71411090ef358a6cc78b7458365 ""
   "/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/babel-german/ngerman.ldf" 1705784828 2289 4c0bd5448e6c4088c5170e3997082036 ""
@@ -90,7 +98,6 @@
   "/usr/local/texlive/2024/texmf-dist/tex/latex/base/inputenc.sty" 1705352648 5048 425739d70251273bf93e3d51f3c40048 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/base/report.cls" 1705352648 23203 f5d913095ece2233436f0e628619cd37 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/base/size12.clo" 1705352648 8449 f07039d8e4e89f21078d9b5137579bfc ""
-  "/usr/local/texlive/2024/texmf-dist/tex/latex/base/t1cmtt.fd" 1705352648 2443 790016d75def8d3127df5c216a45abcc ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/bookmark/bkm-pdftex.def" 1702241854 8818 aa5157b46368efebf023abff55611467 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/bookmark/bookmark.sty" 1702241854 18245 97e6be180cf07bb6f7008cfdaaecfce5 ""
   "/usr/local/texlive/2024/texmf-dist/tex/latex/epstopdf-pkg/epstopdf-base.sty" 1579991033 13886 d1306dcf79a944f6988e688c1785f9ce ""
@@ -120,9 +127,10 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1711631004.81992 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1711630954 8221423 372f162c8be74ad946f44aa79ec08b2d ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "expose.aux" 1741280280.51775 3595 973284d4131353bde692caee3a45af37 "pdflatex"
-  "expose.tex" 1741280279.92964 9902 ea967c36b7ece9bb4e3cf31d950c4121 ""
-  "expose.toc" 1741280280.51901 632 072afbc77e3e8ee1fc9bb6cc4c847711 "pdflatex"
+  "expose.aux" 1741339500.20697 3938 d5486ad44c1b72f700aad0854728347d "pdflatex"
+  "expose.bbl" 1741339207.47078 996 3c83bf759614bf9570b4c65f982c3b8d "bibtex expose"
+  "expose.tex" 1741339499.26012 7982 d72f53293bff62d7d7f3c9e8a6bdaace ""
+  "expose.toc" 1741339500.20877 632 192b59d7255b302b2205d61e9894a545 "pdflatex"
   (generated)
   "expose.aux"
   "expose.log"
