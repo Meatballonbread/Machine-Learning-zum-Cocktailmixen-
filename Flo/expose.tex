@@ -28,24 +28,59 @@
 % --- Farben & Listings (Code-Blöcke) ---
 \usepackage{xcolor}
 \usepackage{listings}
+\usepackage{float} % Für [H]-Platzierung, um Listings möglichst zusammenzuhalten
 
 % =========================
-% EIGENE JSON-DEF IM LISTINGS
+% Individuelle Einstellungen für Code-Listings
 % =========================
+\definecolor{codegray}{rgb}{0.95,0.95,0.95}
+\definecolor{commentcolor}{rgb}{0.2,0.5,0.2}
+\definecolor{keywordcolor}{rgb}{0,0,0.7}
+\definecolor{stringcolor}{rgb}{0.65,0.0,0.0}
+
+% JSON-Sprache definieren
 \lstdefinelanguage{json}{
-  basicstyle=\normalfont\ttfamily,
+  stringstyle=\color{stringcolor},
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  morestring=[b]"%
+}
+
+% Allgemeiner Code-Stil für Python
+\lstdefinestyle{custompython}{
+  language=Python,
+  float,                % Listing als Float
+  floatplacement=H,     % Versuch, Listing genau hier zu platzieren
+  basicstyle=\footnotesize\ttfamily,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{gray},
   numbers=left,
-  numberstyle=\tiny,
+  numberstyle=\tiny\color{gray},
   stepnumber=1,
+  numbersep=5pt,
   showstringspaces=false,
   breaklines=true,
-  frame=lines,
-  alsoletter=-,
-  morestring=[b]",
-  morecomment=[l]{//},
-  morecomment=[s]{/*}{*/},
-  moredelim=[l][\color{magenta}]{\#},
-  stringstyle=\color{blue}
+  commentstyle=\color{commentcolor},
+  keywordstyle=\color{keywordcolor}\bfseries,
+  stringstyle=\color{stringcolor}
+}
+
+% Spez. Code-Stil für JSON
+\lstdefinestyle{customjson}{
+  language=json,
+  float,
+  floatplacement=H,
+  basicstyle=\footnotesize\ttfamily,
+  backgroundcolor=\color{codegray},
+  frame=single,
+  rulecolor=\color{gray},
+  numbers=left,
+  numberstyle=\tiny\color{gray},
+  stepnumber=1,
+  numbersep=5pt,
+  showstringspaces=false,
+  breaklines=true
 }
 
 % =========================
@@ -116,10 +151,10 @@ Ein \textbf{Autoencoder} eignet sich hervorragend, um latente Strukturen zu erke
   \item \textbf{Encoder}: Komprimiert das Nutzerprofil \(\mathbf{p}_{\text{user}}\) auf einen Latent-Space (z.\,B. drei Dimensionen).
   \item \textbf{Decoder}: Rekonstruiert aus dem Latent-Space das Profil \(\mathbf{p}_{\text{rekon}}\).
 \end{itemize}
-Das Ziel im Training ist es, den \textit{Mean Squared Error} (MSE) zwischen \(\mathbf{p}_{\text{rekon}}\) und dem Originalprofil \(\mathbf{p}_{\text{user}}\) zu minimieren.
+Das Ziel im Training ist es, den \emph{Mean Squared Error} (MSE) zwischen \(\mathbf{p}_{\text{rekon}}\) und dem Originalprofil \(\mathbf{p}_{\text{user}}\) zu minimieren.
 
 \subsubsection*{Beispielcode für einen Autoencoder in Python}
-\begin{lstlisting}[language=Python, caption={Einfacher Autoencoder-Aufbau mit Keras}]
+\begin{lstlisting}[style=custompython, caption={Einfacher Autoencoder-Aufbau mit Keras}]
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras.layers import Input, Dense
@@ -159,7 +194,7 @@ Nach der Rekonstruktion entsteht ein \enquote{idealisiertes} Profil \(\mathbf{p}
 wobei \(\mathbf{A} \in \mathbb{R}^{5 \times M}\) alle verfügbaren Zutatenprofile enthält und \(\mathbf{w}\in \mathbb{R}^M\) die Gewichte (Volumenanteile) sind. Negative Lösungen werden auf 0 gesetzt, und nur die Top-\(k\) Gewichte bleiben übrig.
 
 \subsubsection*{Codebeispiel für die Mischung}
-\begin{lstlisting}[language=Python, caption={Berechnung der Mischprofile mit Least Squares}]
+\begin{lstlisting}[style=custompython, caption={Berechnung der Mischprofile mit Least Squares}]
 import numpy as np
 
 def create_mix_profile(reconstructed_profile, ingredient_profiles, 
@@ -209,7 +244,7 @@ Wenn ein \textbf{alkoholischer} Cocktail gewünscht wird, wird beispielsweise 30
 \section{Konkreter Programmablauf und Beispiele}
 Das System lädt zunächst die JSON-Datei, in der \texttt{ingredients} und \texttt{questions} definiert sind. Dann beantwortet der Nutzer die Fragen. Ein exemplarisches JSON-Fragment (inkl. Fragebogen) sieht so aus:
 
-\begin{lstlisting}[language=json, caption={Exemplarische JSON mit Fragen und Zutaten}]
+\begin{lstlisting}[style=customjson, caption={Exemplarische JSON mit Fragen und Zutaten}]
 {
   "ingredients": {
     "Zuckersirup": {
@@ -236,7 +271,7 @@ Das System lädt zunächst die JSON-Datei, in der \texttt{ingredients} und \text
     {
       "question": "Bevorzugen Sie eine alkoholische Variante?",
       "option1_text": "Ja",
-      "option1_taste": [0, 0, 0, 0, 0],  // separately handled
+      "option1_taste": [0, 0, 0, 0, 0],
       "option2_text": "Nein",
       "option2_taste": [0, 0, 0, 0, 0]
     }
@@ -249,7 +284,7 @@ Nach dem Durchlauf des Fragebogens steht das \texttt{user\_profile}. Dann fragt 
 \subsection{Rating-Funktion}
 Der Nutzer kann abschließend eine Bewertung (z.B. auf einer Skala von 1 bis 5) abgeben. Diese wird in einer separaten JSON-Datei gespeichert, was perspektivisch für \emph{Supervised Learning} oder \emph{Reinforcement Learning} genutzt werden kann. Ein Beispiel:
 
-\begin{lstlisting}[language=Python, caption={Speichern einer Nutzerbewertung in einer JSON-Datei}]
+\begin{lstlisting}[style=custompython, caption={Speichern einer Nutzerbewertung in einer JSON-Datei}]
 import os, json
 from datetime import datetime
 

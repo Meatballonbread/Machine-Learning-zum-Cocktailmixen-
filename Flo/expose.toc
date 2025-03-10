@@ -7,10 +7,10 @@
 \contentsline {subsection}{\numberline {2.1.1}Datenvorverarbeitung}{4}{subsection.2.1.1}%
 \contentsline {subsection}{\numberline {2.1.2}Fragebogen und Nutzerprofil}{4}{subsection.2.1.2}%
 \contentsline {subsection}{\numberline {2.1.3}Autoencoder zur Profilrekonstruktion}{5}{subsection.2.1.3}%
-\contentsline {subsection}{\numberline {2.1.4}Least-Squares-Optimierung}{6}{subsection.2.1.4}%
-\contentsline {subsection}{\numberline {2.1.5}Aufteilung in alkoholisch/nicht-alkoholisch}{7}{subsection.2.1.5}%
-\contentsline {section}{\numberline {2.2}Konkreter Programmablauf und Beispiele}{7}{section.2.2}%
-\contentsline {subsection}{\numberline {2.2.1}Rating-Funktion}{9}{subsection.2.2.1}%
-\contentsline {section}{\numberline {2.3}Ergebnisse und Diskussion}{10}{section.2.3}%
+\contentsline {subsection}{\numberline {2.1.4}Least-Squares-Optimierung}{5}{subsection.2.1.4}%
+\contentsline {subsection}{\numberline {2.1.5}Aufteilung in alkoholisch/nicht-alkoholisch}{6}{subsection.2.1.5}%
+\contentsline {section}{\numberline {2.2}Konkreter Programmablauf und Beispiele}{6}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Rating-Funktion}{6}{subsection.2.2.1}%
+\contentsline {section}{\numberline {2.3}Ergebnisse und Diskussion}{6}{section.2.3}%
 \contentsline {section}{\numberline {2.4}Zusammenfassung und Ausblick}{10}{section.2.4}%
 \contentsline {chapter}{\numberline {3}Literaturverzeichnis}{11}{chapter.3}%
