@@ -1,16 +1,67 @@
-\documentclass[12pt, a4paper]{report}
+\documentclass[12pt,a4paper]{report}
+
+% --- Sprache, Zeichensätze ---
 \usepackage[ngerman]{babel}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
+
+% --- Damit \enquote funktioniert ---
+\usepackage{csquotes}
+
+% --- Seitenränder und Layout ---
 \usepackage{geometry}
-\usepackage{graphicx}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage[numbered]{bookmark}
-\usepackage{setspace}
-\usepackage{hyperref}
-\onehalfspacing
 \geometry{left=3cm, right=2.5cm, top=2.5cm, bottom=2.5cm}
+
+% --- Mathematische Pakete ---
+\usepackage{amsmath,amssymb}
+
+% --- Grafiken, Bilder ---
+\usepackage{graphicx}
+
+% --- Hyperlinks, Bookmarks etc. ---
+\usepackage{bookmark}  % Lädt intern hyperref usw.
+
+% --- Zeilenabstand ---
+\usepackage{setspace}
+\onehalfspacing
+
+% --- Farben & Listings (Code-Blöcke) ---
+\usepackage{xcolor}
+\usepackage{listings}
+
+% =========================
+% EIGENE JSON-DEF IM LISTINGS
+% =========================
+\lstdefinelanguage{json}{
+  basicstyle=\normalfont\ttfamily,
+  numbers=left,
+  numberstyle=\tiny,
+  stepnumber=1,
+  showstringspaces=false,
+  breaklines=true,
+  frame=lines,
+  alsoletter=-,
+  morestring=[b]",
+  morecomment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  moredelim=[l][\color{magenta}]{\#},
+  stringstyle=\color{blue}
+}
+
+% =========================
+% Umlaute in Listings
+% =========================
+\lstset{
+  inputencoding=utf8,
+  literate=
+    {ö}{{\"o}}1
+    {ü}{{\"u}}1
+    {ä}{{\"a}}1
+    {Ö}{{\"O}}1
+    {Ü}{{\"U}}1
+    {Ä}{{\"A}}1
+    {ß}{{\ss}}1
+}
 
 \begin{document}
 
@@ -23,8 +74,8 @@
     \vspace{1cm}
     Fachsemester: 5 \par
     \vspace{1cm}
-    Betreuer: Moritz Fuchsloch, Kim Glumann \par
-    Institut für Strahlwerkzeuge (IFSW) \par
+    Betreuer: Moritz Fuchsloch, Kim Glumann \\
+    Institut für Strahlwerkzeuge (IFSW) \\
     Universität Stuttgart \par
     \vfill
     Stuttgart, \today
@@ -36,90 +87,229 @@
 \chapter{Einleitung}
 
 \section{Motivation}
-Seit Veröffentlichung von GPT-4 im November 2022 ist das öffentliche Interesse an Künstlicher Intelligenz (KI) und Machine Learning (ML) enorm gestiegen. Cocktails bieten ein ideales Anwendungsszenario für ML, da sie über einen großen Parameterraum verfügen und die menschliche Geschmackswahrnehmung sehr komplex und nicht-linear ist. Diese Arbeit demonstriert, wie ML eingesetzt werden kann, um automatisch Cocktails zu mischen, indem komplexe Geschmacksprofile analysiert und in individuelle Rezepturen übersetzt werden.
+Seit der Veröffentlichung von GPT-4 im November 2022 hat das öffentliche Interesse an Künstlicher Intelligenz (KI) und Maschinellem Lernen (ML) drastisch zugenommen. Neben klassischen Feldern wie Bildverarbeitung oder Sprachverstehen stoßen \enquote{unorthodoxe} Anwendungsbereiche zunehmend auf Interesse. Ein solches Beispiel ist das \textbf{automatisierte Mischen von Cocktails}: Hier treffen unterschiedliche Geschmackspräferenzen (z.\,B. \enquote{süß} vs. \enquote{sauer}) auf eine komplexe Vielfalt an Zutaten. Machine Learning kann helfen, diesen mehrdimensionalen Raum zu strukturieren und personalisierte Vorschläge zu generieren.
+
+Cocktails sind nicht nur ein kulinarischer Genuss, sondern repräsentieren auch ein nichtlineares, hochdimensionales Geschmacksproblem. Unterschiedliche Zutaten bringen unterschiedliche Intensitäten in den Dimensionen \enquote{süß}, \enquote{sauer}, \enquote{bitter}, \enquote{fruchtig}, \enquote{würzig} usw. mit sich. Gleichzeitig hat jeder Mensch subjektive Vorlieben, die nicht immer einfach zu quantifizieren sind. Die zentrale Fragestellung dieser Arbeit lautet: \enquote{Wie kann man mit Methoden des maschinellen Lernens individuelle Geschmacksprofile erfassen und daraus geeignete Mischverhältnisse für Cocktails ableiten?}
 
 \section{Stand der Technik}
-Im Bereich des maschinellen Lernens dominieren aktuell Transformer-Modelle aufgrund ihrer Fähigkeit, komplexe Zusammenhänge in umfangreichen Datensätzen effektiv zu erfassen \cite{vaswani2017attention}. Neben Transformern werden auch andere Modelle wie CNNs (für Bilder), RNNs (für sequentielle Daten) und GANs (zur Daten-Generierung) genutzt \cite{goodfellow2014generative}. Für diese Arbeit wurde jedoch bewusst ein Autoencoder gewählt, da dieser robust bei kleinen Datensätzen ist und besonders gut zur Rekonstruktion latenter Muster geeignet ist \cite{goodfellow2016deep}. Neuere Trends beinhalten hybride Modelle und Reinforcement Learning, um Nutzerfeedback einzubeziehen \cite{sutton2018reinforcement}.
+Im Bereich des maschinellen Lernens dominieren mittlerweile diverse Modellklassen für unterschiedliche Einsatzzwecke. \textbf{Transformer-Modelle} wie in \cite{vaswani2017attention} haben die natürliche Sprachverarbeitung revolutioniert. Zur Generierung realistisch wirkender Daten, z.\,B. synthetischer Bilder, kommen \textbf{Generative Adversarial Networks} (GANs) \cite{goodfellow2014generative} zum Einsatz. Ein \textbf{Autoencoder} \cite{goodfellow2016deep} ist hingegen ein unüberwachtes Verfahren, das bei der Rekonstruktion latenter Datenmuster punkten kann – insbesondere dann, wenn die Datensätze nicht allzu groß sind. Zudem könnte ein \textbf{Reinforcement-Learning}-Ansatz \cite{sutton2018reinforcement} langfristig angewendet werden, um Feedback (z.\,B. Nutzerbewertungen) direkt in das System zurückzuführen und es iterativ zu verbessern.
 
 \chapter{Hauptteil}
+
 \section{Methodik}
 
 \subsection{Datenvorverarbeitung}
-Zu Beginn wurde eine JSON-basierte Datenbank angelegt, die alle relevanten Zutaten
-sowie ihre zugehörigen Geschmacksprofile (süß, sauer, bitter, fruchtig, würzig) enthält.
-Diese Datenbank dient als Grundlage für sämtliche Analysen und Optimierungen. Um
-eine effiziente Datenverarbeitung zu ermöglichen, wurde der JSON-Datensatz zunächst
-mithilfe von Python-Bibliotheken wie JSON und pandas eingelesen und in ein Dictio-
-nary überführt. Anschließend wurde das Dictionary mit der Bibliothek pandas in ein
-DataFrame konvertiert, um eine strukturierte Datenverarbeitung zu ermöglichen.
-Da unterschiedliche Zutaten teils stark voneinander abweichende Wertebereiche in
-ihren Geschmacksprofilen aufweisen können, wurden die Daten mittels Standardisierung normalisiert. Hierfür wurde der StandardScaler aus der Bibliothek scikit-learn
-verwendet, um die Daten auf einen Mittelwert von null und eine Standardabweichung
-von eins zu skalieren. Abschließend erfolgte die Aufteilung der normalisierten Daten
-in Trainings- und Testsets im Verhältnis 80/20, um das Modell auf Generalisierung zu
-prüfen und Overfitting vorzubeugen. Dies ermöglicht eine zuverlässige Bewertung der
-Modellqualität und Robustheit gegenüber unbekannten Daten.
+Ein wichtiger Baustein ist die Vorbereitung der Daten. Dazu wurde eine JSON-Datei angelegt, welche sämtliche Zutaten mit ihren zugehörigen Geschmacksprofilen enthält. Beispielhaft liegen pro Zutat fünf Werte vor: \enquote{süß}, \enquote{sauer}, \enquote{bitter}, \enquote{fruchtig}, \enquote{würzig} sowie ein Boolean \texttt{alcoholic}, der kennzeichnet, ob eine Zutat Alkohol enthält oder nicht. Die Dimensionen sind dabei beliebig erweiterbar – bei Bedarf könnte man \enquote{salzig}, \enquote{umami} oder \enquote{kühlend} ergänzen.
 
-\subsection{Modellierung}
-Die Entwicklung des Systems basiert auf einer Kombination aus Machine-Learning-Techniken und mathematischer Optimierung.
+Um die Daten zu normalisieren, wird häufig der \texttt{StandardScaler} (\texttt{scikit-learn}) verwendet, der jeden Wert auf Mittelwert 0 und Standardabweichung 1 skaliert. Diese Normalisierung verhindert, dass einzelne Geschmacksdimensionen das Training dominieren, nur weil sie größere Zahlenwerte aufweisen.
 
-\subsection*{Datenbasis und Nutzerprofil}
-Zunächst werden Zutaten mit Geschmacksprofilen und nutzerbezogene Fragen aus einer JSON-Datei geladen, um ein individuelles, gewichtetes Nutzerprofil zu erstellen. Der Nutzer durchläuft hierfür einen Fragebogen. Jede Antwort wird zu einem fünfdimensionalen Vektorprofil aggregiert:
+\subsection{Fragebogen und Nutzerprofil}
+Der Nutzer füllt im Programm einen Fragebogen aus, wobei für jede \enquote{Entweder-Oder}-Frage ein kleiner Geschmacksvektor hinterlegt ist. Beispielsweise bedeutet \enquote{Süß} = \((1,0,0,0,0)\), \enquote{Sauer} = \((0,1,0,0,0)\). Nach mehreren Fragen wird das individuelle Profil \(\mathbf{p}_{\text{user}}\) als Mittelwert dieser Teilvektoren ermittelt:
 \[
-\mathbf{p}_{\text{user}} = \frac{1}{N} \sum_{i=1}^{N} \mathbf{q}_i,
+\mathbf{p}_{\text{user}} \;=\; \frac{1}{N} \sum_{i=1}^{N} \mathbf{q}_i.
 \]
-wobei \(\mathbf{q}_i\) das Profil der i-ten Frage ist und \(N\) die Gesamtanzahl beantworteter Fragen. Zusätzlich entscheidet der Nutzer, ob der Cocktail alkoholisch sein soll, und legt die maximale Zutatenzahl \(k\) fest.
+Während manche Nutzer stark \enquote{süß} und \enquote{fruchtig} tendieren, können andere eher \enquote{herb} und \enquote{bitter} favorisieren. Parallel wird abgefragt, ob der Drink \enquote{alkoholisch} sein soll und wie viele Zutaten \(k\) maximal erlaubt sind.
 
-\subsection*{Autoencoder zur Profilrekonstruktion}
-Das zentrale Element des Systems ist ein Autoencoder, der das Nutzerprofil komprimiert und rekonstruiert. Der Autoencoder besteht aus:
+\subsection{Autoencoder zur Profilrekonstruktion}
+Ein \textbf{Autoencoder} eignet sich hervorragend, um latente Strukturen zu erkennen und eventuell \enquote{rauschartige} Komponenten zu glätten. Er besteht aus:
 \begin{itemize}
-  \item \textbf{Encoder}: Komprimiert das Nutzerprofil auf einen dreidimensionalen Latent-Space:
-    \[\mathbf{z} = \text{Encoder}(\mathbf{p}_{\text{user}})\]
-  \item \textbf{Decoder}: Rekonstruiert das Profil aus dem Latent-Space:
-    \[\mathbf{p}_{\text{rekon}} = \text{Decoder}(\mathbf{z})\]
+  \item \textbf{Encoder}: Komprimiert das Nutzerprofil \(\mathbf{p}_{\text{user}}\) auf einen Latent-Space (z.\,B. drei Dimensionen).
+  \item \textbf{Decoder}: Rekonstruiert aus dem Latent-Space das Profil \(\mathbf{p}_{\text{rekon}}\).
 \end{itemize}
-Das Training erfolgt unüberwacht anhand der Geschmacksdaten mittels Loss-Funktion:
-\[\mathcal{L} = \left\lVert \mathbf{p}_{\text{rekon}} - \mathbf{p}_{\text{user}} \right\rVert^2\]
+Das Ziel im Training ist es, den \textit{Mean Squared Error} (MSE) zwischen \(\mathbf{p}_{\text{rekon}}\) und dem Originalprofil \(\mathbf{p}_{\text{user}}\) zu minimieren.
 
-\subsection*{Optimale Zutatenmischung}
-Ausgehend von \( \mathbf{p}_{\text{rekon}} \) wird die optimale Mischung per Least-Squares berechnet:
-\[\min_{\mathbf{w}} \ \left\lVert \mathbf{A}\mathbf{w} - \mathbf{p}_{\text{rekon}} \right\rVert^2\]
-wobei:
+\subsubsection*{Beispielcode für einen Autoencoder in Python}
+\begin{lstlisting}[language=Python, caption={Einfacher Autoencoder-Aufbau mit Keras}]
+import numpy as np
+import tensorflow as tf
+from tensorflow.keras.layers import Input, Dense
+from tensorflow.keras.models import Model
+
+def build_and_train_autoencoder(ingredient_profiles, latent_dim=3, 
+                                epochs=500, batch_size=4):
+    input_dim = ingredient_profiles.shape[1]  # 5 Dimensionen?
+    
+    # Encoder
+    input_layer = Input(shape=(input_dim,))
+    encoded = Dense(latent_dim, activation='relu')(input_layer)
+    
+    # Decoder
+    decoded = Dense(input_dim, activation='sigmoid')(encoded)
+    
+    # Autoencoder zusammensetzen
+    autoencoder = Model(inputs=input_layer, outputs=decoded)
+    autoencoder.compile(optimizer='adam', loss='mse')
+    
+    # Training
+    autoencoder.fit(
+        ingredient_profiles,
+        ingredient_profiles,
+        epochs=epochs,
+        batch_size=batch_size,
+        verbose=1
+    )
+    return autoencoder
+\end{lstlisting}
+
+\subsection{Least-Squares-Optimierung}
+Nach der Rekonstruktion entsteht ein \enquote{idealisiertes} Profil \(\mathbf{p}_{\text{rekon}}\). Um daraus die tatsächlichen Mischverhältnisse der Zutaten abzuleiten, verwendet man eine \textbf{Least-Squares}-Optimierung:
+\[
+\min_{\mathbf{w}} \;\|\mathbf{A}\,\mathbf{w} - \mathbf{p}_{\text{rekon}}\|^2,
+\]
+wobei \(\mathbf{A} \in \mathbb{R}^{5 \times M}\) alle verfügbaren Zutatenprofile enthält und \(\mathbf{w}\in \mathbb{R}^M\) die Gewichte (Volumenanteile) sind. Negative Lösungen werden auf 0 gesetzt, und nur die Top-\(k\) Gewichte bleiben übrig.
+
+\subsubsection*{Codebeispiel für die Mischung}
+\begin{lstlisting}[language=Python, caption={Berechnung der Mischprofile mit Least Squares}]
+import numpy as np
+
+def create_mix_profile(reconstructed_profile, ingredient_profiles, 
+                       ingredient_names, k, total_volume=200.0):
+    # Matrix A = Transpose der Zutatenprofile
+    A = ingredient_profiles.T  
+    b = reconstructed_profile
+    
+    # Löst unbeschränktes Least-Squares
+    w, _, _, _ = np.linalg.lstsq(A, b, rcond=None)
+    
+    # Kein negatives Volumen
+    w = np.maximum(w, 0)
+    
+    # Normieren, sum(w)=1
+    sum_w = np.sum(w)
+    if sum_w == 0:
+        w = np.ones_like(w) / len(w)
+    else:
+        w /= sum_w
+    
+    # Nur Top-k Gewichte behalten
+    if k < len(w):
+        sorted_idx = np.argsort(-w)
+        top_k_idx = sorted_idx[:k]
+        mask = np.zeros_like(w, dtype=bool)
+        mask[top_k_idx] = True
+        w[~mask] = 0
+        sum_w2 = np.sum(w)
+        if sum_w2 > 0:
+            w /= sum_w2
+        else:
+            w[mask] = 1.0 / k
+
+    # ml-Umskalierung (z.B. 200 ml)
+    volumes = w * total_volume
+    mixture = {}
+    for name, vol in zip(ingredient_names, volumes):
+        if vol > 1e-6:
+            mixture[name] = round(float(vol), 2)
+    return mixture
+\end{lstlisting}
+
+\subsection{Aufteilung in alkoholisch/nicht-alkoholisch}
+Wenn ein \textbf{alkoholischer} Cocktail gewünscht wird, wird beispielsweise 30\,\% des Gesamtvolumens für alkoholische Zutaten reserviert und 70\,\% für nicht-alkoholische. Dazu teilt man die Zutatenprofile in zwei Gruppen (alkoholisch vs. nicht-alkoholisch) und führt pro Gruppe eine Least-Squares-Berechnung durch. Am Ende werden beide Gruppen kombiniert.
+
+\section{Konkreter Programmablauf und Beispiele}
+Das System lädt zunächst die JSON-Datei, in der \texttt{ingredients} und \texttt{questions} definiert sind. Dann beantwortet der Nutzer die Fragen. Ein exemplarisches JSON-Fragment (inkl. Fragebogen) sieht so aus:
+
+\begin{lstlisting}[language=json, caption={Exemplarische JSON mit Fragen und Zutaten}]
+{
+  "ingredients": {
+    "Zuckersirup": {
+      "taste": [0.9, 0.0, 0.0, 0.1, 0.0],
+      "alcoholic": false
+    },
+    "Zitronensaft": {
+      "taste": [0.0, 0.9, 0.1, 0.0, 0.0],
+      "alcoholic": false
+    },
+    "Gin": {
+      "taste": [0.2, 0.1, 0.4, 0.0, 0.3],
+      "alcoholic": true
+    }
+  },
+  "questions": [
+    {
+      "question": "Möchten Sie es eher süß oder sauer?",
+      "option1_text": "Süß",
+      "option1_taste": [1, 0, 0, 0, 0],
+      "option2_text": "Sauer",
+      "option2_taste": [0, 1, 0, 0, 0]
+    },
+    {
+      "question": "Bevorzugen Sie eine alkoholische Variante?",
+      "option1_text": "Ja",
+      "option1_taste": [0, 0, 0, 0, 0],  // separately handled
+      "option2_text": "Nein",
+      "option2_taste": [0, 0, 0, 0, 0]
+    }
+  ]
+}
+\end{lstlisting}
+
+Nach dem Durchlauf des Fragebogens steht das \texttt{user\_profile}. Dann fragt das Programm in der Konsole, ob der Cocktail \enquote{alkoholisch} oder \enquote{nicht alkoholisch} sein soll, und wie viele Zutaten man maximal (\(k\)) verwenden möchte. Mithilfe des \texttt{autoencoder}-Modells wird \(\mathbf{p}_{\text{rekon}}\) erstellt und anschließend per \texttt{create\_mix\_profile} das finale Mischungsverhältnis bestimmt.
+
+\subsection{Rating-Funktion}
+Der Nutzer kann abschließend eine Bewertung (z.B. auf einer Skala von 1 bis 5) abgeben. Diese wird in einer separaten JSON-Datei gespeichert, was perspektivisch für \emph{Supervised Learning} oder \emph{Reinforcement Learning} genutzt werden kann. Ein Beispiel:
+
+\begin{lstlisting}[language=Python, caption={Speichern einer Nutzerbewertung in einer JSON-Datei}]
+import os, json
+from datetime import datetime
+
+def save_rating(user_profile, cocktail_mix, rating):
+    ratings_file = "cocktail_ratings.json"
+    
+    # Falls Datei nicht existiert, leere Struktur anlegen
+    if not os.path.exists(ratings_file):
+        with open(ratings_file, "w", encoding="utf-8") as f:
+            json.dump({"ratings": []}, f, ensure_ascii=False, indent=2)
+    
+    with open(ratings_file, "r", encoding="utf-8") as f:
+        data = json.load(f)
+    
+    new_entry = {
+        "timestamp": datetime.now().isoformat(timespec="seconds"),
+        "user_profile": list(map(float, user_profile)),
+        "cocktail_mix": cocktail_mix,
+        "rating": rating
+    }
+    
+    data["ratings"].append(new_entry)
+    
+    with open(ratings_file, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=2)
+    
+    print("Deine Bewertung wurde erfolgreich gespeichert!")
+\end{lstlisting}
+
+Auf diese Weise können langfristig detaillierte Nutzerfeedbacks gesammelt und analysiert werden.
+
+\section{Ergebnisse und Diskussion}
+Erste Tests zeigen, dass \textbf{Autoencoder + Least-Squares-Optimierung} in der Lage sind, funktionierende Rezeptvorschläge zu generieren. Nutzer, die \enquote{süß} und \enquote{fruchtig} angaben, bekamen häufiger Säfte und Sirup empfohlen, wohingegen \enquote{bitter}-orientierte Personen Kräuterliköre oder Gin-dominierte Drinks erhielten. Die \enquote{alkoholisch / nicht-alkoholisch}-Trennung erlaubte eine saubere Kontrolle über den Anteil alkoholischer Zutaten.
+
+Dennoch treten einige \textbf{Limitationen} auf:
 \begin{itemize}
-  \item \(\mathbf{A} \in \mathbb{R}^{5 \times M}\): Matrix der Zutatenprofile,
-  \item \(\mathbf{w}\in \mathbb{R}^M\): Gewichtsvektor der Zutaten.
+  \item \textit{Datenqualität}: Fehlen zu viele Zutaten in der JSON-Datei, entstehen Schätzungen, die möglicherweise nicht akkurat oder \enquote{leer} wirken.
+  \item \textit{Extremprofile}: Personen mit sehr \enquote{extremen} Antworten (z.B. \enquote{nur süß, 0\% bitter}) können Rezepte erhalten, die zu einseitig schmecken.
+  \item \textit{Feedback-Loop}: Das System ist (noch) nicht dynamisch \enquote{lernend}; es könnte aber dank gespeicherter Ratings in Zukunft iterativ verfeinert werden.
 \end{itemize}
-Negative Gewichte werden eliminiert, anschließend werden nur die Top-\(k\)-Zutaten verwendet und deren Anteile auf ein Gesamtvolumen von 200 ml normiert.
 
-\chapter{Zusammenfassung und Ausblick}
-Die in dieser Arbeit vorgestellte Implementierung zeigt eine modulare, gut struktu-
-rierte Softwarelösung, die erfolgreich Methoden des maschinellen Lernens und der ma-
-thematischen Optimierung kombiniert, um individuelle Cocktailrezepte automatisiert
-zu generieren. Der entwickelte Ansatz zeichnet sich besonders durch seine Flexibili-
-tät und Anpassungsfähigkeit aus, wodurch er leicht auf neue Zutaten oder geänderte
-Anforderungen erweitert werden kann.
-Ein entscheidender Vorteil des Systems ist seine Skalierbarkeit. Die modulare Architektur erlaubt es, weitere Komponenten, wie etwa neue Modelle zur Geschmacksanalyse
-oder zusätzliche Optimierungsverfahren, mit geringem Aufwand zu integrieren. Trotz
-dieser Stärken bestehen jedoch auch einige Herausforderungen. Vor allem die Qualität
-und Vollständigkeit der zugrundeliegenden Datenbasis hat erheblichen Einfluss auf die
-Präzision und Zuverlässigkeit der generierten Rezeptvorschläge. Fehlende oder schlecht
-gewählte Zutatenprofile können zu weniger zufriedenstellenden Ergebnissen führen.
-Um diesen Herausforderungen künftig besser zu begegnen, könnten mehrere Erweiterungen sinnvoll sein. Beispielsweise wäre die Implementierung einer benutzerfreundlichen, grafischen Benutzeroberfläche denkbar, die die Interaktion mit dem System
-erheblich vereinfacht und den Nutzern die Möglichkeit bietet, unmittelbar Feedback
-zu geben. Darüber hinaus könnte der Einsatz komplexerer Modelle wie Transformer-
-Architekturen oder hybrider Ansätze, die traditionelle regelbasierte Systeme mit maschinellen Lernverfahren kombinieren, die Genauigkeit der Rezeptgenerierung weiter
-steigern.
-Zusätzlich könnte das Modell durch weitere Geschmacksdimensionen ergänzt werden, um die individuellen Präferenzen der Nutzer noch differenzierter abzubilden. Auch
-eine Erweiterung um Nutzerfeedback und adaptive Lernmechanismen wie ReinforcementLearning könnte perspektivisch die Genauigkeit und Personalisierung des Systems
-nachhaltig verbessern. Solche Ansätze würden nicht nur die Qualität der generierten
-Rezepte verbessern, sondern auch das Potenzial des Systems im kommerziellen Einsatz,
-etwa in Bars oder gastronomischen Betrieben, deutlich erhöhen.
+\section{Zusammenfassung und Ausblick}
+Diese Arbeit verdeutlicht, wie Machine-Learning-Techniken auf den Anwendungsfall \enquote{Cocktailmixen} übertragen werden können. Ein \textbf{Autoencoder} rekonstruiert das Geschmacksprofil, \textbf{Least-Squares} bestimmt die Gewichtsanteile der Zutaten, und Nutzerfeedback kann in JSON-Dateien gespeichert werden, um das System perspektivisch anzupassen. Zu den möglichen Erweiterungen gehören:
+
+\begin{itemize}
+  \item \textbf{Weitere Geschmacksdimensionen}: z.B. \enquote{salzig}, \enquote{umami}, \enquote{kühlend}.
+  \item \textbf{Reinforcement Learning}: Echtzeit-Anpassungen basierend auf Nutzerbewertungen (\enquote{Reward}).
+  \item \textbf{Datenbasis ausbauen}: Mehr Zutaten, ggf. mit Sensorik-Informationen aus Smart-Dispensern.
+  \item \textbf{Gastronomische Nutzung}: Automatisierte Cocktailmaschinen, die direkt auf Nutzervorlieben reagieren.
+\end{itemize}
+
+Obwohl das Modell den menschlichen Geschmackssinn nicht ersetzen wird, zeigt es, dass KI in der Lage ist, hochdimensionale Geschmacksprobleme zu strukturieren und dem Anwender konkrete Rezeptvorschläge zu liefern. Die vorgestellte Lösung ist zudem modular und skalierbar. Das bedeutet, sie lässt sich leicht erweitern, wenn neue Zutaten oder geänderte Geschmacksdimensionen hinzukommen.
+
+\clearpage
+\chapter{Literaturverzeichnis}
 \bibliographystyle{alpha}
 \bibliography{literatur}
 
-
 \chapter*{Selbstständigkeitserklärung}
-Ich versichere, dass ich diese Arbeit selbstständig verfasst habe.
+Ich versichere, dass ich diese Arbeit selbstständig verfasst habe. Alle verwendeten Hilfsmittel, Quellen und Zitate sind ordnungsgemäß angegeben und kenntlich gemacht.
 
 \vspace{2cm}
 Stuttgart, \today \hfill (Florian Grassl)

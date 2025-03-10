@@ -5,34 +5,34 @@ The style file: alpha.bst
 Database file #1: literatur.bib
 You've used 4 entries,
             2543 wiz_defined-function locations,
-            579 strings with 5147 characters,
-and the built_in function-call counts, 1753 in all, are:
-= -- 150
-> -- 144
+            577 strings with 4926 characters,
+and the built_in function-call counts, 1530 in all, are:
+= -- 137
+> -- 106
 < -- 0
-+ -- 53
-- -- 53
-* -- 139
-:= -- 331
++ -- 39
+- -- 39
+* -- 102
+:= -- 276
 add.period$ -- 12
 call.type$ -- 4
-change.case$ -- 35
+change.case$ -- 27
 chr.to.int$ -- 4
 cite$ -- 4
-duplicate$ -- 56
-empty$ -- 91
-format.name$ -- 55
-if$ -- 327
+duplicate$ -- 50
+empty$ -- 101
+format.name$ -- 43
+if$ -- 300
 int.to.chr$ -- 1
 int.to.str$ -- 0
-missing$ -- 6
-newline$ -- 24
+missing$ -- 4
+newline$ -- 23
 num.names$ -- 12
-pop$ -- 39
+pop$ -- 41
 preamble$ -- 1
-purify$ -- 41
+purify$ -- 33
 quote$ -- 0
-skip$ -- 45
+skip$ -- 47
 stack$ -- 0
 substring$ -- 28
 swap$ -- 4
@@ -43,4 +43,4 @@ type$ -- 24
 warning$ -- 0
 while$ -- 12
 width$ -- 6
-write$ -- 52
+write$ -- 50
